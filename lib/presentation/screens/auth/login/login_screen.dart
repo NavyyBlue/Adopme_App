@@ -31,7 +31,6 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              // Campo de Email
               TextField(
                 controller: controller.emailController,
                 decoration: InputDecoration(
@@ -45,7 +44,6 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              // Campo de Contraseña
               TextField(
                 controller: controller.passwordController,
                 obscureText: true,
@@ -62,14 +60,11 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 20),
               RoundedButton(
                 text: 'Continuar',
-                onPressed: controller.login,
-
+                onPressed: () => controller.login(context),
               ),
               SizedBox(height: 20),
-              // Texto para registrarse
               GestureDetector(
                 onTap: () {
-                  // Acción para registrarse
                 },
                 child: Text(
                   '¿No tienes cuenta? Regístrate',

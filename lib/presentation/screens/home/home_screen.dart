@@ -1,19 +1,20 @@
+import 'package:adopme_frontend/presentation/screens/pet/register_pet/register_pet_screen.dart';
 import 'package:flutter/material.dart';
-import 'upload_image_page.dart';
-import 'other_page.dart';
-import '../widgets/bottom_nav_bar.dart';
+import '../other_page.dart';
+import '../../widgets/bottom_nav_bar.dart';
 
-class MainPage extends StatefulWidget {
+
+class HomeScreen extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<HomeScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     OtherPage(),
     OtherPage(),
-    UploadImagePage(),
+    RegisterPetScreen(),
     OtherPage(),
     OtherPage(),
   ];
