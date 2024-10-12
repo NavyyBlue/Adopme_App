@@ -1,3 +1,4 @@
+import 'package:adopme_frontend/presentation/screens/pet/pet_list/pet_list_screen.dart';
 import 'package:adopme_frontend/presentation/screens/pet/register_pet/register_pet_screen.dart';
 import 'package:flutter/material.dart';
 import '../other_page.dart';
@@ -12,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 class _MainPageState extends State<HomeScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
-    OtherPage(),
+    PetListScreen(),
     OtherPage(),
     RegisterPetScreen(),
     OtherPage(),

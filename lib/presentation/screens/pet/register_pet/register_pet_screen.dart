@@ -71,6 +71,7 @@ class RegisterPetScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 TextField(
+                  controller: controller.nameController,
                   decoration: InputDecoration(
                     labelText: 'Nombre',
                     border: OutlineInputBorder(
@@ -83,7 +84,7 @@ class RegisterPetScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 TextField(
-                  controller: TextEditingController(text: controller.responseData?.species ?? ''),
+                  controller: controller.speciesController,
                   decoration: InputDecoration(
                     labelText: 'Especie',
                     border: OutlineInputBorder(
@@ -96,7 +97,7 @@ class RegisterPetScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 TextField(
-                  controller: TextEditingController(text: controller.responseData?.breed ?? ''),
+                  controller: controller.breedController,
                   decoration: InputDecoration(
                     labelText: 'Raza',
                     border: OutlineInputBorder(
@@ -112,7 +113,7 @@ class RegisterPetScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextField(
-                        controller: TextEditingController(text: controller.responseData?.weight?.toString() ?? ''),
+                        controller: controller.weightController,
                         decoration: InputDecoration(
                           labelText: 'Peso',
                           suffixText: 'kg',
@@ -128,7 +129,7 @@ class RegisterPetScreen extends StatelessWidget {
                     SizedBox(width: 20),
                     Expanded(
                       child: TextField(
-                        controller: TextEditingController(text: controller.responseData?.size ?? ''),
+                        controller: controller.sizeController,
                         decoration: InputDecoration(
                           labelText: 'Tamaño',
                           border: OutlineInputBorder(
@@ -148,7 +149,7 @@ class RegisterPetScreen extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: TextField(
-                        controller: TextEditingController(text: controller.responseData?.age?.toString() ?? ''),
+                        controller: controller.ageController,
                         decoration: InputDecoration(
                           labelText: 'Edad',
                           suffixText: 'meses',
@@ -165,7 +166,7 @@ class RegisterPetScreen extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: TextField(
-                        controller: TextEditingController(text: controller.responseData?.color ?? ''),
+                        controller: controller.colorController,
                         decoration: InputDecoration(
                           labelText: 'Color',
                           border: OutlineInputBorder(
@@ -182,13 +183,14 @@ class RegisterPetScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: controller.isUploading ? null : () async {
-                    await controller.uploadImage();
+                    await controller.registerPet(context);
                   },
                   child: controller.isUploading
                       ? CircularProgressIndicator()
                       : Text('Registrar mascota'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF153D8A),
+                    backgroundColor: Color(0xFF2E4E7C),
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),

@@ -6,6 +6,7 @@ class GetFeaturesPetResponse {
   final int weight;
   final String color;
   final String size;
+  final String imageUrl;
 
   GetFeaturesPetResponse({
     required this.status,
@@ -15,6 +16,7 @@ class GetFeaturesPetResponse {
     required this.weight,
     required this.color,
     required this.size,
+    required this.imageUrl,
   });
 
   factory GetFeaturesPetResponse.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class GetFeaturesPetResponse {
       weight: data['weight'],
       color: data['color'],
       size: data['size'],
+      imageUrl: json['imageUrl'],
     );
   }
 }

@@ -12,7 +12,8 @@ class AnalyzerImageRepository {
   Future<GetFeaturesPetResponse> getFeaturesPet(
       String filename, String file) async {
     try {
-
+      print("Filename: $filename");
+      print("File: $file");
       final response = await dio.post(
           '${NetworkConstants.baseUrl}${NetworkConstants
               .analyzerImageRoute}${NetworkConstants.getFeaturesPetEndpoint}',
