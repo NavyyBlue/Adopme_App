@@ -1,5 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'pets_database_helper.dart';
+import 'missing_pets_database_helper.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -15,7 +17,7 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'pets_database.db');
+    String path = join(await getDatabasesPath(), 'main_database.db');
     return await openDatabase(
       path,
       version: 1,
@@ -24,39 +26,7 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE pets(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        species TEXT,
-        breed TEXT,
-        weight REAL,
-        size TEXT,
-        age INTEGER,
-        color TEXT,
-        imageUrl TEXT
-      )
-    ''');
-  }
-
-  Future<int> insertPet(Map<String, dynamic> pet) async {
-    Database db = await database;
-    return await db.insert('pets', pet);
-  }
-
-  Future<List<Map<String, dynamic>>> getPets() async {
-    Database db = await database;
-    return await db.query('pets');
-  }
-
-  Future<int> updatePet(Map<String, dynamic> pet) async {
-    Database db = await database;
-    int id = pet['id'];
-    return await db.update('pets', pet, where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<int> deletePet(int id) async {
-    Database db = await database;
-    return await db.delete('pets', where: 'id = ?', whereArgs: [id]);
+    await PetsDatabaseHelper.onCreate(db);
+    await MissingPetsDatabaseHelper.onCreate(db);
   }
 }

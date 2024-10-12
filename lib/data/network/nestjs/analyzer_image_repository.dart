@@ -12,8 +12,6 @@ class AnalyzerImageRepository {
   Future<GetFeaturesPetResponse> getFeaturesPet(
       String filename, String file) async {
     try {
-      print("Filename: $filename");
-      print("File: $file");
       final response = await dio.post(
           '${NetworkConstants.baseUrl}${NetworkConstants
               .analyzerImageRoute}${NetworkConstants.getFeaturesPetEndpoint}',
@@ -23,8 +21,6 @@ class AnalyzerImageRepository {
           }).timeout(const Duration(seconds: 10), onTimeout: () {
         throw TimeoutException('Time out');
       });
-
-      print("Response: ${response.data}");
 
       return GetFeaturesPetResponse.fromJson(response.data);
     } on DioException catch (e) {

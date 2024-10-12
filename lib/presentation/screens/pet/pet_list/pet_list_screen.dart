@@ -64,7 +64,6 @@ class PetListScreen extends StatelessWidget {
                                         color: Colors.red,
                                       ),
                                       onPressed: () {
-                                        // Acción para añadir a favoritos
                                       },
                                     ),
                                   ],

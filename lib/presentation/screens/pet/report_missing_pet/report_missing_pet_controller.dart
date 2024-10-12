@@ -1,19 +1,20 @@
 import 'dart:io';
-import 'package:adopme_frontend/data/network/nestjs/analyzer_image_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:adopme_frontend/data/local/database_helper.dart';
+import 'package:adopme_frontend/data/local/missing_pets_database_helper.dart';
 import 'package:adopme_frontend/common/utils/utils.dart';
-import '../../../../data/local/database_helper.dart';
-import '../../../../data/local/pets_database_helper.dart';
+
+import '../../../../data/network/nestjs/analyzer_image_repository.dart';
 import '../../../../models/analyzer_image/get_features_pet/get_features_pet_response.dart';
 
-class RegisterPetController extends GetxController {
+class ReportMissingPetController extends ChangeNotifier {
   final analyzerImageRepository = AnalyzerImageRepository();
-  final utils = Utils();
   File? image;
   bool isUploading = false;
   late GetFeaturesPetResponse responseData;
+  final utils = Utils();
 
   final nameController = TextEditingController();
   final speciesController = TextEditingController();
@@ -22,7 +23,8 @@ class RegisterPetController extends GetxController {
   final sizeController = TextEditingController();
   final ageController = TextEditingController();
   final colorController = TextEditingController();
-
+  final descriptionController = TextEditingController();
+  final locationController = TextEditingController();
 
   Future<void> pickImage() async {
     final picker = ImagePicker();
@@ -30,26 +32,20 @@ class RegisterPetController extends GetxController {
 
     if (pickedFile != null) {
       image = File(pickedFile.path);
-      update();
+      notifyListeners();
     }
   }
 
-  Future<void> uploadImage(BuildContext context) async {
+  Future<void> uploadImage() async {
     if (image == null) return;
 
     isUploading = true;
-    update();
+    notifyListeners();
 
     try {
       final base64Image = await utils.convertImageToBytes(image!);
-      final fileName = 'pet/${await utils.generateImageName(image!)}';
+      final fileName = 'missing_pet/${await utils.generateImageName(image!)}';
       responseData = await analyzerImageRepository.getFeaturesPet(fileName, base64Image);
-
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image uploaded successfully')),
-        );
-      }
 
       speciesController.text = responseData.species;
       breedController.text = responseData.breed;
@@ -58,28 +54,28 @@ class RegisterPetController extends GetxController {
       ageController.text = responseData.age.toString();
       colorController.text = responseData.color;
     } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to upload image'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to upload image'),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       isUploading = false;
-      update();
+      notifyListeners();
     }
   }
 
-  Future<void> registerPet(BuildContext context) async {
+  Future<void> reportMissingPet(BuildContext context) async {
     if (nameController.text.isEmpty ||
         speciesController.text.isEmpty ||
         breedController.text.isEmpty ||
         weightController.text.isEmpty ||
         sizeController.text.isEmpty ||
         ageController.text.isEmpty ||
-        colorController.text.isEmpty) {
+        colorController.text.isEmpty ||
+        descriptionController.text.isEmpty ||
+        locationController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please fill in all fields'),
@@ -89,7 +85,7 @@ class RegisterPetController extends GetxController {
       return;
     }
 
-    final pet = {
+    final missingPet = {
       'name': nameController.text,
       'species': speciesController.text,
       'breed': breedController.text,
@@ -98,15 +94,17 @@ class RegisterPetController extends GetxController {
       'age': int.tryParse(ageController.text) ?? 0,
       'color': colorController.text,
       'imageUrl': responseData.imageUrl,
+      'description': descriptionController.text,
+      'location': locationController.text,
     };
 
-    await PetsDatabaseHelper.insertPet(await DatabaseHelper().database, pet);
+    await MissingPetsDatabaseHelper.insertMissingPet(await DatabaseHelper().database, missingPet);
 
     if (!context.mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Pet registered successfully!'),
+        content: Text('Missing pet reported successfully!'),
         backgroundColor: Colors.green,
       ),
     );

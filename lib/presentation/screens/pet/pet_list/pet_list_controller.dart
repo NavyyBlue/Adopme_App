@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:adopme_frontend/data/local/database_helper.dart';
+import 'package:adopme_frontend/data/local/pets_database_helper.dart';
+import 'package:get/get.dart';
 
 class PetListController extends GetxController {
   var pets = [].obs;
@@ -15,10 +15,9 @@ class PetListController extends GetxController {
   Future<void> fetchPets() async {
     try {
       isLoading(true);
-      var petList = await DatabaseHelper().getPets();
-      if (petList != null) {
-        pets.assignAll(petList);
-      }
+      var petList =
+          await PetsDatabaseHelper.getPets(await DatabaseHelper().database);
+      pets.assignAll(petList);
     } finally {
       isLoading(false);
     }

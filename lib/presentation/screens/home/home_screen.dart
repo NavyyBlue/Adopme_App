@@ -1,17 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:adopme_frontend/presentation/screens/pet/pet_list/pet_list_screen.dart';
 import 'package:adopme_frontend/presentation/screens/pet/register_pet/register_pet_screen.dart';
-import 'package:flutter/material.dart';
+import '../../widgets/bottom_sheet/bottom_sheet_options.dart';
 import '../other_page.dart';
 import '../../widgets/bottom_nav_bar.dart';
+import '../pet/report_missing_pet/report_missing_pet_screen.dart';
+import 'home_controller.dart';
 
-
-class HomeScreen extends StatefulWidget {
-  @override
-  _MainPageState createState() => _MainPageState();
-}
-
-class _MainPageState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+class HomeScreen extends StatelessWidget {
   static final List<Widget> _widgetOptions = <Widget>[
     PetListScreen(),
     OtherPage(),
@@ -20,21 +17,70 @@ class _MainPageState extends State<HomeScreen> {
     OtherPage(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavBar(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
+    return ChangeNotifierProvider(
+      create: (_) => HomeController(),
+      child: Consumer<HomeController>(
+        builder: (context, controller, child) {
+          return Scaffold(
+            body: Center(
+              child: _widgetOptions.elementAt(controller.selectedIndex),
+            ),
+            bottomNavigationBar: BottomNavBar(
+              selectedIndex: controller.selectedIndex,
+              onItemTapped: controller.onItemTapped,
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Inicio',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.search),
+                  label: 'Buscar',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.add_circle, size: 40),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.notifications),
+                  label: 'Notificaciones',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Perfil',
+                ),
+              ],
+              onAddButtonPressed: () => showOptions(context, <ListTile>[
+                ListTile(
+                  leading: Icon(Icons.pets),
+                  title: Text('Register Pet'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterPetScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.report),
+                  title: Text('Report Missing Pet'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ReportMissingPetScreen()),
+                    );
+                  },
+                ),
+              ]),
+            ),
+          );
+        },
       ),
     );
   }
