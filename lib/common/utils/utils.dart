@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:image/image.dart' as img;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Utils{
 
@@ -34,5 +35,12 @@ class Utils{
     String imageName = '${serialNumber}_$formattedDate.$imageFormat';
 
     return imageName;
+  }
+
+  Future<void> requestLocationPermission() async {
+    var status = await Permission.location.status;
+    if (!status.isGranted) {
+      await Permission.location.request();
+    }
   }
 }

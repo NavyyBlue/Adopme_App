@@ -1,3 +1,4 @@
+import 'package:adopme_frontend/presentation/screens/vet/vet_list/vet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:adopme_frontend/presentation/screens/pet/pet_list/pet_list_screen.dart';
@@ -13,7 +14,7 @@ class HomeScreen extends StatelessWidget {
     PetListScreen(),
     OtherPage(),
     RegisterPetScreen(),
-    OtherPage(),
+    VetScreen(),
     OtherPage(),
   ];
 
@@ -46,8 +47,8 @@ class HomeScreen extends StatelessWidget {
                   label: '',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.notifications),
-                  label: 'Notificaciones',
+                  icon: Icon(Icons.local_hospital_rounded),
+                  label: 'Veterinarias',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person),
