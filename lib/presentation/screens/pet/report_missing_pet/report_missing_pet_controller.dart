@@ -9,7 +9,7 @@ import 'package:adopme_frontend/common/utils/utils.dart';
 import '../../../../data/network/nestjs/analyzer_image_repository.dart';
 import '../../../../models/analyzer_image/get_features_pet/get_features_pet_response.dart';
 
-class ReportMissingPetController extends ChangeNotifier {
+class ReportMissingPetController extends GetxController {
   final analyzerImageRepository = AnalyzerImageRepository();
   File? image;
   bool isUploading = false;
@@ -32,20 +32,21 @@ class ReportMissingPetController extends ChangeNotifier {
 
     if (pickedFile != null) {
       image = File(pickedFile.path);
-      notifyListeners();
+      update();
     }
   }
 
-  Future<void> uploadImage() async {
+  Future<void> uploadImage(BuildContext context) async {
     if (image == null) return;
 
     isUploading = true;
-    notifyListeners();
+    update();
 
     try {
       final base64Image = await utils.convertImageToBytes(image!);
       final fileName = 'missing_pet/${await utils.generateImageName(image!)}';
-      responseData = await analyzerImageRepository.getFeaturesPet(fileName, base64Image);
+      responseData =
+          await analyzerImageRepository.getFeaturesPet(fileName, base64Image);
 
       speciesController.text = responseData.species;
       breedController.text = responseData.breed;
@@ -54,15 +55,17 @@ class ReportMissingPetController extends ChangeNotifier {
       ageController.text = responseData.age.toString();
       colorController.text = responseData.color;
     } catch (e) {
-      ScaffoldMessenger.of(Get.context!).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to upload image'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error uploading image'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } finally {
       isUploading = false;
-      notifyListeners();
+      update();
     }
   }
 
@@ -98,7 +101,8 @@ class ReportMissingPetController extends ChangeNotifier {
       'location': locationController.text,
     };
 
-    await MissingPetsDatabaseHelper.insertMissingPet(await DatabaseHelper().database, missingPet);
+    await MissingPetsDatabaseHelper.insertMissingPet(
+        await DatabaseHelper().database, missingPet);
 
     if (!context.mounted) return;
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:adopme_frontend/styles/colors.dart' as app_colors;
 
 class RegisterPetTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -7,6 +6,10 @@ class RegisterPetTextField extends StatelessWidget {
   final String? suffixText;
   final bool enabled;
   final TextInputType keyboardType;
+  final Color fillColor;
+  final Color textColor;
+  final Color suffixTextColor;
+  final int maxLines;
 
   const RegisterPetTextField({
     super.key,
@@ -15,6 +18,10 @@ class RegisterPetTextField extends StatelessWidget {
     this.suffixText,
     this.enabled = true,
     this.keyboardType = TextInputType.text,
+    required this.fillColor,
+    required this.textColor,
+    required this.suffixTextColor,
+    this.maxLines = 1,
   });
 
   @override
@@ -24,20 +31,21 @@ class RegisterPetTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         suffixText: suffixText,
-        suffixStyle: const TextStyle(color: app_colors.Colors.suffixTextTextFieldRegisterPetColor),
+        suffixStyle: TextStyle(color: suffixTextColor),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
         ),
         filled: true,
-        fillColor: app_colors.Colors.backgroundTextFieldRegisterPetColor,
+        fillColor: fillColor,
       ),
-      style: const TextStyle(
-        color: app_colors.Colors.textTextFieldRegisterPetColor,
+      style: TextStyle(
+        color: textColor,
         fontSize: 16,
       ),
       enabled: enabled,
       keyboardType: keyboardType,
+      maxLines: maxLines,
     );
   }
 }
