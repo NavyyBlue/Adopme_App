@@ -52,7 +52,7 @@ class VetsReviewsRepository {
           'review_translated_text': reviewText,
         },
       );
-      if (response.statusCode == 201 && response.data != null) {
+      if (response.statusCode == 201 && response.data != null && response.data != '') {
         return Review.fromJson(response.data as Map<String, dynamic>);
       } else {
         return Review();

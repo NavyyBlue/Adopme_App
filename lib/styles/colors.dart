@@ -1,8 +1,11 @@
 import 'dart:ui';
 
 class Colors {
+  //Common
   static const Color backgroundColor = Color(0xFFFFFFFF);
   static const Color textButtonColor = Color(0xFFFFFFFF);
+  static const Color bakcgroundColorButton = Color(0xFF2E4E7C);
+
 
   // RegisterPetScreen
   static const Color backgroundButtonUploadImagePetColor = Color(0xFF9FBCE5);

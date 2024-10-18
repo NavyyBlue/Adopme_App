@@ -1,6 +1,7 @@
 import 'package:adopme_frontend/presentation/screens/vet/vet_reviews/vet_reviews_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:adopme_frontend/styles/colors.dart' as colors;
 
 class AddReviewBottomSheet extends StatefulWidget {
   final String vetId;
@@ -22,10 +23,17 @@ class _AddReviewBottomSheetState extends State<AddReviewBottomSheet> {
     });
   }
 
+  void _submitReview() {
+    _controller.addReview(
+      vetId: widget.vetId,
+      rating: _rating,
+      reviewText: _commentController.text
+    );
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    late final vetId = widget.vetId;
-
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -39,6 +47,13 @@ class _AddReviewBottomSheetState extends State<AddReviewBottomSheet> {
               controller: _commentController,
               decoration: const InputDecoration(
                 labelText: 'Comentario',
+                labelStyle: TextStyle(color: Colors.grey),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: colors.Colors.bakcgroundColorButton),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: colors.Colors.bakcgroundColorButton),
+                ),
               ),
               maxLines: 3,
             ),
@@ -58,15 +73,12 @@ class _AddReviewBottomSheetState extends State<AddReviewBottomSheet> {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () {
-                _controller.addReview(
-                  vetId: vetId,
-                  rating: _rating,
-                  reviewText: _commentController.text,
-                );
-                Navigator.of(context).pop();
-              },
-              child: const Text('Agregar Review'),
+              onPressed: _rating == 0 ? null : _submitReview,
+              style: ElevatedButton.styleFrom(backgroundColor: colors.Colors.bakcgroundColorButton),
+              child: const Text(
+                'Agregar Review',
+                style: TextStyle(color: colors.Colors.textButtonColor),
+              ),
             ),
           ],
         ),
