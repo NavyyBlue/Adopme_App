@@ -5,6 +5,8 @@ import 'package:adopme_frontend/styles/colors.dart' as app_colors;
 import '../../../widgets/textfields/textfields.dart';
 
 class RegisterPetScreen extends StatelessWidget {
+  const RegisterPetScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RegisterPetController>(
@@ -67,8 +69,9 @@ class RegisterPetScreen extends StatelessWidget {
                   },
                   child: Text('Subir imagen'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[100],
-                    foregroundColor: Colors.black,
+                    backgroundColor:
+                        app_colors.Colors.backgroundButtonUploadImagePetColor,
+                    foregroundColor: app_colors.Colors.textButtonColor,
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -79,25 +82,44 @@ class RegisterPetScreen extends StatelessWidget {
               const SizedBox(height: 20),
               Container(
                 color: app_colors.Colors.primaryBackgroundRegisterPetColor,
-                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 32.0, vertical: 24.0),
                 child: Column(
                   children: [
                     RegisterPetTextField(
                       controller: controller.nameController,
                       hintText: 'Nombre',
                       enabled: controller.image != null,
+                      fillColor:
+                          app_colors.Colors.backgroundTextFieldRegisterPetColor,
+                      textColor:
+                          app_colors.Colors.textTextFieldRegisterPetColor,
+                      suffixTextColor:
+                          app_colors.Colors.textTextFieldRegisterPetColor,
                     ),
                     const SizedBox(height: 20),
                     RegisterPetTextField(
                       controller: controller.speciesController,
                       hintText: 'Especie',
                       enabled: controller.image != null,
+                      fillColor:
+                          app_colors.Colors.backgroundTextFieldRegisterPetColor,
+                      textColor:
+                          app_colors.Colors.textTextFieldRegisterPetColor,
+                      suffixTextColor:
+                          app_colors.Colors.textTextFieldRegisterPetColor,
                     ),
                     const SizedBox(height: 20),
                     RegisterPetTextField(
                       controller: controller.breedController,
                       hintText: 'Raza',
                       enabled: controller.image != null,
+                      fillColor:
+                          app_colors.Colors.backgroundTextFieldRegisterPetColor,
+                      textColor:
+                          app_colors.Colors.textTextFieldRegisterPetColor,
+                      suffixTextColor:
+                          app_colors.Colors.textTextFieldRegisterPetColor,
                     ),
                     const SizedBox(height: 20),
                     Row(
@@ -109,6 +131,12 @@ class RegisterPetScreen extends StatelessWidget {
                             suffixText: 'kg',
                             enabled: controller.image != null,
                             keyboardType: TextInputType.number,
+                            fillColor: app_colors
+                                .Colors.backgroundTextFieldRegisterPetColor,
+                            textColor:
+                                app_colors.Colors.textTextFieldRegisterPetColor,
+                            suffixTextColor:
+                                app_colors.Colors.textTextFieldRegisterPetColor,
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -117,6 +145,12 @@ class RegisterPetScreen extends StatelessWidget {
                             controller: controller.sizeController,
                             hintText: 'Tamaño',
                             enabled: controller.image != null,
+                            fillColor: app_colors
+                                .Colors.backgroundTextFieldRegisterPetColor,
+                            textColor:
+                                app_colors.Colors.textTextFieldRegisterPetColor,
+                            suffixTextColor:
+                                app_colors.Colors.textTextFieldRegisterPetColor,
                           ),
                         ),
                       ],
@@ -132,6 +166,12 @@ class RegisterPetScreen extends StatelessWidget {
                             suffixText: 'meses',
                             enabled: controller.image != null,
                             keyboardType: TextInputType.number,
+                            fillColor: app_colors
+                                .Colors.backgroundTextFieldRegisterPetColor,
+                            textColor:
+                                app_colors.Colors.textTextFieldRegisterPetColor,
+                            suffixTextColor:
+                                app_colors.Colors.textTextFieldRegisterPetColor,
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -141,6 +181,12 @@ class RegisterPetScreen extends StatelessWidget {
                             controller: controller.colorController,
                             hintText: 'Color',
                             enabled: controller.image != null,
+                            fillColor: app_colors
+                                .Colors.backgroundTextFieldRegisterPetColor,
+                            textColor:
+                                app_colors.Colors.textTextFieldRegisterPetColor,
+                            suffixTextColor:
+                                app_colors.Colors.textTextFieldRegisterPetColor,
                           ),
                         ),
                       ],
@@ -152,12 +198,15 @@ class RegisterPetScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: ElevatedButton(
-                  onPressed: controller.isUploading ? null : () async {
-                    await controller.registerPet(context);
-                  },
+                  onPressed: controller.isUploading
+                      ? null
+                      : () async {
+                          await controller.registerPet(context);
+                        },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF2E4E7C),
-                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        app_colors.Colors.backgroundButtonRegisterPetColor,
+                    foregroundColor: app_colors.Colors.textButtonColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
