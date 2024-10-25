@@ -10,9 +10,18 @@ class PetListScreen extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Registered Pets'),
+            title: Text('AdoptMe'),
             backgroundColor: Colors.transparent,
             elevation: 0,
+            actions: [
+              IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () {
+                  // Acción para refrescar la lista si se desea.
+                  controller.fetchPets();
+                },
+              ),
+            ],
           ),
           body: Obx(() {
             if (controller.isLoading.value) {
@@ -60,10 +69,13 @@ class PetListScreen extends StatelessWidget {
                                     ),
                                     IconButton(
                                       icon: Icon(
-                                        Icons.favorite_border,
+                                        controller.favoritePets.contains(pet['id'])
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
                                         color: Colors.red,
                                       ),
                                       onPressed: () {
+                                        controller.toggleFavorite(pet['id']);
                                       },
                                     ),
                                   ],
@@ -76,11 +88,24 @@ class PetListScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${pet['age']} meses',
+                                  pet['age'],
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[600],
                                   ),
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(Icons.location_on, size: 16, color: Colors.grey),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      pet['distance'],
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
