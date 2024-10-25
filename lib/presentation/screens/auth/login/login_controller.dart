@@ -1,30 +1,92 @@
+import 'package:adopme_frontend/constants/firebase_auth_error_messages.dart';
+import 'package:adopme_frontend/presentation/screens/auth/login/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:adopme_frontend/presentation/screens/home/home_screen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:get/get.dart';
 
-class LoginController {
+class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  static LoginController instance = Get.find();
+  late Rx<User?> _user;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
-  void login(BuildContext context) {
-    final email = emailController.text;
-    final password = passwordController.text;
+  @override
+  void onReady() {
+    super.onReady();
+    _user = Rx<User?>(auth.currentUser);
+    _user.bindStream(auth.userChanges());
+    ever(_user, _initialScreen);
+  }
 
-    if (_validateEmail(email) && _validatePassword(password)) {
-      print('Iniciando sesión con $email y $password');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+  _initialScreen(User? user) {
+    if (user == null) {
+      Get.offAll(() => LoginScreen());
     } else {
-      print('Email o contraseña no válidos');
+      Get.offAll(() => HomeScreen());
     }
   }
 
-  bool _validateEmail(String email) {
+  Future<void> login() async {
+    final email = emailController.text;
+    final password = passwordController.text;
+
+    if (formKey.currentState!.validate()) {
+      try {
+        await auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        Get.offAll(() => HomeScreen());
+      } on FirebaseAuthException catch (e) {
+        String message = FirebaseAuthErrorMessages.getMessage(e.code);
+        Get.snackbar(
+          "Error",
+          message,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+      }
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      await auth.signInWithCredential(credential);
+      Get.offAll(() => HomeScreen());
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+        duration: Duration(seconds: 3),
+      );
+    }
+  }
+
+  void signOut() async {
+    await auth.signOut();
+    Get.offAll(() => LoginScreen());
+  }
+
+  bool validateEmail(String email) {
     return email.isNotEmpty && email.contains('@');
   }
 
-  bool _validatePassword(String password) {
+  bool validatePassword(String password) {
     return password.isNotEmpty && password.length > 6;
   }
 }

@@ -1,12 +1,16 @@
+import 'package:adopme_frontend/firebase_options.dart';
+import 'package:adopme_frontend/presentation/screens/auth/login/login_controller.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'data/local/database_helper.dart';
-import 'package:adopme_frontend/presentation/screens/profile/pet_profile_screen.dart';
-import 'package:adopme_frontend/presentation/screens/auth/login/login_screen.dart';
-import 'package:adopme_frontend/presentation/screens/pet/pet_list/pet_list_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseHelper().database; // Initialize the database
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -20,7 +24,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: PetListScreen(),
+      initialBinding: BindingsBuilder(() {
+        Get.put(LoginController());
+      }),
+      home: Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
     );
   }
 }
