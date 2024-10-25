@@ -1,5 +1,7 @@
+import 'package:adopme_frontend/presentation/screens/profile/profile_screen.dart';
 import 'package:adopme_frontend/presentation/screens/vet/vet_list/vet_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:adopme_frontend/presentation/screens/pet/pet_list/pet_list_screen.dart';
 import 'package:adopme_frontend/presentation/screens/pet/register_pet/register_pet_screen.dart';
@@ -15,7 +17,7 @@ class HomeScreen extends StatelessWidget {
     OtherPage(),
     RegisterPetScreen(),
     VetScreen(),
-    OtherPage(),
+    ProfileScreen(),
   ];
 
   const HomeScreen({super.key});
@@ -33,7 +35,7 @@ class HomeScreen extends StatelessWidget {
             bottomNavigationBar: BottomNavBar(
               selectedIndex: controller.selectedIndex,
               onItemTapped: controller.onItemTapped,
-              items: const <BottomNavigationBarItem>[
+              items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
                   label: 'Inicio',
