@@ -38,29 +38,23 @@ class LoginScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 AuthTextField(
-                  controller: controller.passwordController,
-                  labelText: 'Contraseña',
-                  obscureText: true,
-                  fillColor: Colors.teal[50]!,
-                  labelColor: Colors.teal[700]!,
-                  textColor: Colors.teal[700]!,
+                  controller: controller.emailController,
+                  labelText: 'Email',
                   validator: (value) {
-                    if (!controller.validatePassword(value!)) {
-                      return 'Password must be at least 6 characters';
+                    if (!controller.validateEmail(value!)) {
+                      return 'Please enter a valid email';
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 AuthTextField(
-                  controller: controller.emailController,
-                  labelText: 'Email',
-                  fillColor: Colors.teal[50]!,
-                  labelColor: Colors.teal[700]!,
-                  textColor: Colors.teal[700]!,
+                  controller: controller.passwordController,
+                  labelText: 'Contraseña',
+                  obscureText: true,
                   validator: (value) {
-                    if (!controller.validateEmail(value!)) {
-                      return 'Please enter a valid email';
+                    if (!controller.validatePassword(value!)) {
+                      return 'Password must be at least 6 characters';
                     }
                     return null;
                   },

@@ -47,9 +47,6 @@ class RegisterScreen extends StatelessWidget {
                       AuthTextField(
                         controller: controller.nameController,
                         labelText: 'Nombre',
-                        fillColor: Colors.teal[50]!,
-                        labelColor: Colors.teal[700]!,
-                        textColor: Colors.black,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor ingrese su nombre';
@@ -61,9 +58,6 @@ class RegisterScreen extends StatelessWidget {
                       AuthTextField(
                         controller: controller.lastNameController,
                         labelText: 'Apellido',
-                        fillColor: Colors.teal[50]!,
-                        labelColor: Colors.teal[700]!,
-                        textColor: Colors.black,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor ingrese su apellido';
@@ -75,9 +69,6 @@ class RegisterScreen extends StatelessWidget {
                       AuthTextField(
                         controller: controller.emailController,
                         labelText: 'Correo electrónico',
-                        fillColor: Colors.teal[50]!,
-                        labelColor: Colors.teal[700]!,
-                        textColor: Colors.black,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor ingrese su correo electrónico';
@@ -89,9 +80,6 @@ class RegisterScreen extends StatelessWidget {
                       AuthTextField(
                         controller: controller.phoneController,
                         labelText: 'Número de celular',
-                        fillColor: Colors.teal[50]!,
-                        labelColor: Colors.teal[700]!,
-                        textColor: Colors.black,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor ingrese su número de celular';
@@ -104,9 +92,6 @@ class RegisterScreen extends StatelessWidget {
                         controller: controller.passwordController,
                         labelText: 'Contraseña',
                         obscureText: true,
-                        fillColor: Colors.teal[50]!,
-                        labelColor: Colors.teal[700]!,
-                        textColor: Colors.black,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor ingrese su contraseña';
