@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:adopme_frontend/common/utils/utils.dart';
-import '../../../../data/local/database_helper.dart';
-import '../../../../data/local/pets_database_helper.dart';
+import '../../../../data/network/nestjs/pet_repository.dart';
 import '../../../../models/analyzer_image/get_features_pet/get_features_pet_response.dart';
+import '../../../../models/pet/create_pet.dart';
 
 class RegisterPetController extends GetxController {
   final analyzerImageRepository = AnalyzerImageRepository();
+  final petRepository = PetRepository();
   final utils = Utils();
   File? image;
   bool isUploading = false;
@@ -22,7 +23,7 @@ class RegisterPetController extends GetxController {
   final sizeController = TextEditingController();
   final ageController = TextEditingController();
   final colorController = TextEditingController();
-
+  final genderController = TextEditingController();
 
   Future<void> pickImage() async {
     final picker = ImagePicker();
@@ -79,7 +80,8 @@ class RegisterPetController extends GetxController {
         weightController.text.isEmpty ||
         sizeController.text.isEmpty ||
         ageController.text.isEmpty ||
-        colorController.text.isEmpty) {
+        colorController.text.isEmpty ||
+        genderController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please fill in all fields'),
@@ -89,26 +91,40 @@ class RegisterPetController extends GetxController {
       return;
     }
 
-    final pet = {
-      'name': nameController.text,
-      'species': speciesController.text,
-      'breed': breedController.text,
-      'weight': double.tryParse(weightController.text) ?? 0.0,
-      'size': sizeController.text,
-      'age': int.tryParse(ageController.text) ?? 0,
-      'color': colorController.text,
-      'imageUrl': responseData.imageUrl,
-    };
-
-    await PetsDatabaseHelper.insertPet(await DatabaseHelper().database, pet);
-
-    if (!context.mounted) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Pet registered successfully!'),
-        backgroundColor: Colors.green,
-      ),
+    final createPet = CreatePet(
+      name: nameController.text,
+      weight: weightController.text,
+      size: sizeController.text,
+      species: speciesController.text,
+      breed: breedController.text,
+      age: ageController.text,
+      gender: genderController.text,
+      description: '', // Add description if needed
+      location: '', // Add location if needed
+      color: colorController.text,
+      imageUrl: responseData.imageUrl,
+      reportingUserId: '', // Add reportingUserId if needed
     );
+
+    try {
+      await petRepository.createPet(createPet, false); // Pass the appropriate value for isMissing
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Pet registered successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to register pet'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }

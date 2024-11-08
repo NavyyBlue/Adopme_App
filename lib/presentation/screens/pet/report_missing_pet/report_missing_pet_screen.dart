@@ -180,6 +180,29 @@ class ReportMissingPetScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 20),
+                        DropdownButtonFormField<String>(
+                          value: null,
+                          hint: Text('Sexo'),
+                          items: ['Macho', 'Hembra']
+                              .map((sexo) => DropdownMenuItem(
+                            value: sexo,
+                            child: Text(sexo),
+                          ))
+                              .toList(),
+                          onChanged: (value) {
+                            controller.genderController.text = value ?? '';
+                          },
+                          decoration: InputDecoration(
+                            fillColor: app_colors
+                                .Colors.backgroundTextFieldRegisterPetColor,
+                            filled: true,
+                            hintText: 'Sexo',
+                            hintStyle: TextStyle(
+                              color: app_colors.Colors.textTextFieldRegisterPetColor,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
                         RegisterPetTextField(
                           controller: controller.descriptionController,
                           hintText: 'Descripción',
@@ -209,7 +232,7 @@ class ReportMissingPetScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
                     child: ElevatedButton(
                       onPressed: controller.isUploading
                           ? null
@@ -227,7 +250,7 @@ class ReportMissingPetScreen extends StatelessWidget {
                       ),
                       child: controller.isUploading
                           ? const CircularProgressIndicator()
-                          : Text('Registrar mascota'),
+                          : Text('Reportar mascota'),
                     ),
                   ),
                 ],

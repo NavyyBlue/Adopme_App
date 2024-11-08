@@ -1,3 +1,4 @@
+import 'package:adopme_frontend/presentation/screens/pet/pet_selection/pet_selection_screen.dart';
 import 'package:adopme_frontend/presentation/screens/profile/profile_screen.dart';
 import 'package:adopme_frontend/presentation/screens/vet/vet_list/vet_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ import 'home_controller.dart';
 class HomeScreen extends StatelessWidget {
   static final List<Widget> _widgetOptions = <Widget>[
     FeedScreen(),
-    PetListScreen(),
+    PetSelectionScreen(),
     RegisterPetScreen(),
     VetScreen(),
     ProfileScreen(),
