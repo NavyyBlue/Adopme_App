@@ -4,6 +4,7 @@ import 'package:adopme_frontend/presentation/widgets/buttons/rounded_button.dart
 import 'package:google_fonts/google_fonts.dart';
 import '../component/textfield.dart';
 import 'register_controller.dart';
+import '../preferences/preferences_screen.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -102,7 +103,9 @@ class RegisterScreen extends StatelessWidget {
                       SizedBox(height: 20),
                       RoundedButton(
                         text: 'Registrarse',
-                        onPressed: () => controller.register(),
+                        //onPressed: () => controller.register(),
+                        // vincular onPressed con la vista de preferences_screen.dart
+                        onPressed: () => Get.to(() => PreferencesScreen()),
                       ),
                     ],
                   ),
