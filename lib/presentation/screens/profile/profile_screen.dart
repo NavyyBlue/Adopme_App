@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:adopme_frontend/presentation/screens/auth/login/login_controller.dart';
 import 'package:adopme_frontend/presentation/screens/auth/login/login_screen.dart';
+import 'package:adopme_frontend/presentation/screens/profile/post_status_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -32,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
                         // child: Image.network('src'),
                         child: Image.network(
                           'https://media.licdn.com/dms/image/v2/C4E03AQEp55lSR4WuIw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1657679721882?e=2147483647&v=beta&t=JEDBdZmahqY1tiw1kWegxfx20OOG6QIDfUdtU3EBTiE',
-                          width: 120,
+                          width: 110,
                         ),
                       ),
                     ),
@@ -60,6 +61,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 10),
 
               // Nombre de usuario
+              /*
               Center(
                 child: Text(
                   'Estiven Salvador\nHurtado Santos',
@@ -72,6 +74,7 @@ class ProfileScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
+              */
 
               // Text nombre
               const SizedBox(height: 20),
@@ -108,6 +111,41 @@ class ProfileScreen extends StatelessWidget {
               DisabledTextField(
                 hintText: user.email ?? 'No disponible',
               ),
+
+              const SizedBox(height: 20),
+              ElevatedButton(
+              onPressed: () {
+                // print(user);
+                // vincular a la vista de post_status_screen.dart
+                Get.to(() => PostStatusScreen());
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                backgroundColor: Color(0xFFD9F1F1),
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(color: Color(0xFFC8C8C8)),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Estado de publicaciones',
+                    style: TextStyle(
+                      color: Color(0xFF2A2A2A),
+                      fontSize: 15,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Colors.black,
+                  )
+                ],
+              ),
+            ),
 
               // Cerrar sesión
               const SizedBox(height: 20),
