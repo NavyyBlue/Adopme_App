@@ -103,9 +103,7 @@ class RegisterScreen extends StatelessWidget {
                       SizedBox(height: 20),
                       RoundedButton(
                         text: 'Registrarse',
-                        //onPressed: () => controller.register(),
-                        // vincular onPressed con la vista de preferences_screen.dart
-                        onPressed: () => Get.to(() => PreferencesScreen()),
+                        onPressed: () => controller.register(),
                       ),
                     ],
                   ),

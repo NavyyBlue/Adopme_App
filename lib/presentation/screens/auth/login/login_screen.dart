@@ -17,7 +17,7 @@ class LoginScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: controller.formKey,
+            //key: controller.formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

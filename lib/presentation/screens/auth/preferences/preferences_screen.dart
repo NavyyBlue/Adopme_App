@@ -1,32 +1,37 @@
+import 'package:adopme_frontend/common/utils/pet_age_enum.dart';
+import 'package:adopme_frontend/common/utils/pet_color_enum.dart';
+import 'package:adopme_frontend/common/utils/pet_type_enum.dart';
+import 'package:adopme_frontend/presentation/screens/auth/preferences/preferences_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:adopme_frontend/presentation/widgets/buttons/preference_button.dart';
 import 'package:adopme_frontend/presentation/widgets/buttons/rounded_button.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import '../component/textfield.dart';
-import '../register/register_controller.dart';
 
-class PreferencesScreen extends StatelessWidget {
-  const PreferencesScreen({Key? key}) : super(key: key);
+import '../../../../models/preferences/preferences_model.dart';
+
+class PreferencesScreen extends StatefulWidget {
+  @override
+  _PreferencesScreenState createState() => _PreferencesScreenState();
+}
+
+class _PreferencesScreenState extends State<PreferencesScreen> {
+  final PreferencesController preferencesController =
+      Get.put(PreferencesController());
+  Set<PetType> petType = {};
+  Set<PetColor> petColor = {};
+  Set<PetAge> petAge = {};
+  Set<PetSize> petSize = {};
+
+  final Map<String, PetSize> petSizeIntervals = {
+    'Hasta 4 Kg.': PetSize(min: 0, max: 4),
+    '4 - 6 Kg.': PetSize(min: 4, max: 6),
+    '10 - 20 Kg.': PetSize(min: 10, max: 20),
+    '20 Kg. +': PetSize(min: 20, max: null),
+  };
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(RegisterController());
-
-    // Diccionario para almacenar el estado de cada botón
-    final Map<String, bool> buttonStates = {
-      'Perros': false,
-      'Gatos': false,
-      'Marrón': false,
-      'Blanco': false,
-      'Negro': false,
-      'Tricolor': false,
-      'Hasta 4 Kg.': false,
-      '4 - 6 Kg.': false,
-      '10 - 20 Kg.': false,
-      '20 Kg. +': false,
-    };
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -75,101 +80,99 @@ class PreferencesScreen extends StatelessWidget {
                     spacing: 5,
                     runSpacing: 5,
                     alignment: WrapAlignment.center,
-                    children: [
-                      PreferenceButton(
-                        text: 'Perros',
-                        isSelected: buttonStates['Perros']!,
-                        onPressed: (isSelected) {
-                          buttonStates['Perros'] = isSelected;
+                    children: PetType.values.map((PetType type) {
+                      return FilterChip(
+                        label: Text(PetType.toValueLabel(type.value)),
+                        selected: petType.contains(type),
+                        onSelected: (isSelected) {
+                          setState(() {
+                            if (isSelected) {
+                              petType.add(type);
+                            } else {
+                              petType.remove(type);
+                            }
+                          });
                         },
-                      ),
-                      PreferenceButton(
-                        text: 'Gatos',
-                        isSelected: buttonStates['Gatos']!,
-                        onPressed: (isSelected) {
-                          buttonStates['Gatos'] = isSelected;
-                        },
-                      ),
-                    ],
+                      );
+                    }).toList(),
                   ),
                   SizedBox(height: 20),
                   Wrap(
                     spacing: 5,
                     runSpacing: 5,
                     alignment: WrapAlignment.center,
-                    children: [
-                      PreferenceButton(
-                        text: 'Marrón',
-                        isSelected: buttonStates['Marrón']!,
-                        onPressed: (isSelected) {
-                          buttonStates['Marrón'] = isSelected;
+                    children: PetColor.values.map((PetColor color) {
+                      return FilterChip(
+                        label: Text(PetColor.toValueLabel(color.value)),
+                        selected: petColor.contains(color),
+                        onSelected: (isSelected) {
+                          setState(() {
+                            if (isSelected) {
+                              petColor.add(color);
+                            } else {
+                              petColor.remove(color);
+                            }
+                          });
                         },
-                      ),
-                      PreferenceButton(
-                        text: 'Blanco',
-                        isSelected: buttonStates['Blanco']!,
-                        onPressed: (isSelected) {
-                          buttonStates['Blanco'] = isSelected;
-                        },
-                      ),
-                      PreferenceButton(
-                        text: 'Negro',
-                        isSelected: buttonStates['Negro']!,
-                        onPressed: (isSelected) {
-                          buttonStates['Negro'] = isSelected;
-                        },
-                      ),
-                      PreferenceButton(
-                        text: 'Tricolor',
-                        isSelected: buttonStates['Tricolor']!,
-                        onPressed: (isSelected) {
-                          buttonStates['Tricolor'] = isSelected;
-                        },
-                      ),
-                    ],
+                      );
+                    }).toList(),
                   ),
                   SizedBox(height: 20),
                   Wrap(
                     spacing: 5,
                     runSpacing: 5,
                     alignment: WrapAlignment.center,
-                    children: [
-                      PreferenceButton(
-                        text: 'Hasta 4 Kg.',
-                        isSelected: buttonStates['Hasta 4 Kg.']!,
-                        onPressed: (isSelected) {
-                          buttonStates['Hasta 4 Kg.'] = isSelected;
+                    children: petSizeIntervals.keys.map((String sizeInterval) {
+                      return FilterChip(
+                        label: Text(sizeInterval),
+                        selected:
+                            petSize.contains(petSizeIntervals[sizeInterval]),
+                        onSelected: (isSelected) {
+                          setState(() {
+                            if (isSelected) {
+                              petSize.add(petSizeIntervals[sizeInterval]!);
+                            } else {
+                              petSize.remove(petSizeIntervals[sizeInterval]);
+                            }
+                          });
                         },
-                      ),
-                      PreferenceButton(
-                        text: '4 - 6 Kg.',
-                        isSelected: buttonStates['4 - 6 Kg.']!,
-                        onPressed: (isSelected) {
-                          buttonStates['4 - 6 Kg.'] = isSelected;
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: 20),
+                  Wrap(
+                    spacing: 5,
+                    runSpacing: 5,
+                    alignment: WrapAlignment.center,
+                    children: PetAge.values.map((PetAge age) {
+                      return FilterChip(
+                        label: Text(PetAge.toValueLabel(age.value)),
+                        selected: petAge.contains(age),
+                        onSelected: (isSelected) {
+                          setState(() {
+                            if (isSelected) {
+                              petAge.add(age);
+                            } else {
+                              petAge.remove(age);
+                            }
+                          });
                         },
-                      ),
-                      PreferenceButton(
-                        text: '10 - 20 Kg.',
-                        isSelected: buttonStates['10 - 20 Kg.']!,
-                        onPressed: (isSelected) {
-                          buttonStates['10 - 20 Kg.'] = isSelected;
-                        },
-                      ),
-                      PreferenceButton(
-                        text: '20 Kg. +',
-                        isSelected: buttonStates['20 Kg. +']!,
-                        onPressed: (isSelected) {
-                          buttonStates['20 Kg. +'] = isSelected;
-                        },
-                      ),
-                    ],
+                      );
+                    }).toList(),
                   ),
                   SizedBox(height: 50),
                   RoundedButton(
                     text: 'Finalizar',
                     onPressed: () {
-                      print(buttonStates); // Imprime el estado de cada botón
-                      // aqui para registrar al user 
+                      final preferences = PetPreferences(
+                        petType: petType.map((type) => type.value).toList(),
+                        size: petSize.toList(),
+                        age: petAge.map((age) => age.value).toList(),
+                        color: petColor.map((color) => color.value).toList(),
+                      );
+                      preferencesController.addPreferences(preferences);
+                      print(preferences.toJson());
+                      // aqui para registrar al user
                     },
                   ),
                 ],

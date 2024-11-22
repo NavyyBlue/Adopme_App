@@ -1,7 +1,9 @@
+import 'package:adopme_frontend/data/network/nestjs/user_profile_repository.dart';
+import 'package:adopme_frontend/models/user/create_user_profile_payload.dart';
+import 'package:adopme_frontend/presentation/screens/auth/email_verification/email_verification_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:adopme_frontend/presentation/screens/home/home_screen.dart';
 
 class RegisterController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -10,6 +12,7 @@ class RegisterController extends GetxController {
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
+  final userProfileRepository = UserProfileRepository();
   FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<void> register() async {
@@ -18,8 +21,15 @@ class RegisterController extends GetxController {
         await auth.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
-        );
-        Get.offAll(() => HomeScreen());
+        ).then((value) async {
+          value.user!.updateDisplayName("${nameController.text} ${lastNameController.text}");
+        });
+        await userProfileRepository.createUserProfile(CreateUserProfile(
+            userId: auth.currentUser!.uid,
+            phoneNumber: phoneController.text
+        ));
+        auth.currentUser!.sendEmailVerification();
+        Get.offAll(() => EmailVerificationScreen());
       } on FirebaseAuthException catch (e) {
         Get.snackbar(
           "Error",

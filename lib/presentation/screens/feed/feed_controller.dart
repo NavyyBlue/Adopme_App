@@ -29,6 +29,7 @@ class FeedController extends GetxController {
           'description': 'Se perdió Pinky en la zona de Palermo. Por favor, si alguien la ve, comunicarse al 123456789.',
           'timePosted': '28 minutes ago',
         },
+        /*
         {
           'id': 2,
           'userId': 1,
@@ -38,7 +39,7 @@ class FeedController extends GetxController {
           'imageUrl': 'https://instagram.flim39-1.fna.fbcdn.net/v/t51.29350-15/277159164_715532719866458_7063308023723645805_n.webp?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDgweDEzNTAuc2RyLmYyOTM1MC5kZWZhdWx0X2ltYWdlIn0&_nc_ht=instagram.flim39-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=AvrGD6nAoAcQ7kNvgHCcHil&_nc_gid=d981f239959f443c94e870c29b196bf2&edm=APoiHPcBAAAA&ccb=7-5&ig_cache_key=MjgwMTAzNTIzNjY0NzU3MDYwNw%3D%3D.3-ccb7-5&oh=00_AYAeCq1EhXR0YADJTw7FVE62uxa0hpIT6lzV2VkoAx3w4w&oe=672B0491&_nc_sid=22de04', // Imagen de post 1.
           'description': 'Doy en adopción a este perrito. Tiene 2 años y es muy juguetón.',
           'timePosted': '6 hours ago',
-        },
+        },*/
         {
           'id': 3,
           'userId': 2,
