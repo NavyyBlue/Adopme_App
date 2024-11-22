@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../pet/adoption_form/adoption_form_screen.dart';
 import 'pet_profile_controller.dart';
 
 class PetProfileScreen extends StatelessWidget {
@@ -67,7 +68,9 @@ class PetProfileScreen extends StatelessWidget {
 
             // Botón de adoptar
             ElevatedButton(
-              onPressed: controller.adoptPet,
+              onPressed: () {
+                Get.to(() => AdoptionFormScreen());
+              },
               child: Text('Adoptar'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue[800], // Cambia 'primary' a 'backgroundColor'

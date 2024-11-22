@@ -11,6 +11,7 @@ class PetResponse {
   final String? color;
   final String? imageUrl;
   final String? petId;
+  final String? reportingUserId;
 
   PetResponse({
     this.name,
@@ -25,6 +26,7 @@ class PetResponse {
     this.color,
     this.imageUrl,
     this.petId,
+    this.reportingUserId,
   });
 
   factory PetResponse.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class PetResponse {
       color: json['color'],
       imageUrl: json['imageUrl'],
       petId: json['petId'],
+      reportingUserId: json['reportingUserId'],
     );
   }
 
@@ -58,6 +61,7 @@ class PetResponse {
       'color': color,
       'imageUrl': imageUrl,
       'petId': petId,
+      'reportingUserId': reportingUserId,
     };
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class AdoptionFormController {
+class AdoptionFormController extends GetxController {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -8,10 +9,10 @@ class AdoptionFormController {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController dniController = TextEditingController();
 
-  bool acceptTerms = false;
+  var acceptTerms = false.obs;
 
   void toggleAcceptTerms(bool value) {
-    acceptTerms = value;
+    acceptTerms.value = value;
   }
 
   void submitForm() {
@@ -24,6 +25,7 @@ class AdoptionFormController {
     print('DNI: ${dniController.text}');
   }
 
+  @override
   void dispose() {
     nameController.dispose();
     lastNameController.dispose();
@@ -31,5 +33,6 @@ class AdoptionFormController {
     phoneController.dispose();
     addressController.dispose();
     dniController.dispose();
+    super.dispose();
   }
 }

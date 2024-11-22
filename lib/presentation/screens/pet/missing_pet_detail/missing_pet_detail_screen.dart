@@ -6,7 +6,8 @@ import '../compare_image/compare_image_screen.dart';
 import 'missing_pet_detail_controller.dart';
 
 class MissingPetDetailScreen extends StatelessWidget {
-  final MissingPetDetailController controller = Get.put(MissingPetDetailController(Get.find()));
+  final MissingPetDetailController controller =
+      Get.put(MissingPetDetailController(Get.find()));
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,7 @@ class MissingPetDetailScreen extends StatelessWidget {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                Get.to(() => CompareImageScreen(), arguments: pet.imageUrl);
+                Get.to(() => CompareImageScreen(), arguments: pet);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,

@@ -18,8 +18,7 @@ class PetListScreen extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.refresh),
                 onPressed: () {
-                  // Acción para refrescar la lista si se desea.
-                  controller.fetchPets();
+                  controller.fetchAdoptingPets();
                 },
               ),
             ],
@@ -27,13 +26,13 @@ class PetListScreen extends StatelessWidget {
           body: Obx(() {
             if (controller.isLoading.value) {
               return Center(child: CircularProgressIndicator());
-            } else if (controller.pets.isEmpty) {
+            } else if (controller.adoptingPets.isEmpty) {
               return Center(child: Text('No pets registered.'));
             } else {
               return ListView.builder(
-                itemCount: controller.pets.length,
+                itemCount: controller.adoptingPets.length,
                 itemBuilder: (context, index) {
-                  var pet = controller.pets[index];
+                  var pet = controller.adoptingPets[index];
                   return GestureDetector(
                     onTap: () {
                       Get.to(() => PetProfileScreen());
@@ -51,7 +50,7 @@ class PetListScreen extends StatelessWidget {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: Image.network(
-                                pet['imageUrl'],
+                                pet.imageUrl!,
                                 height: 100,
                                 width: 100,
                                 fit: BoxFit.cover,
@@ -66,34 +65,34 @@ class PetListScreen extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        pet['name'],
+                                        pet.name!,
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      IconButton(
-                                        icon: Icon(
-                                          controller.favoritePets.contains(pet['id'])
-                                              ? Icons.favorite
-                                              : Icons.favorite_border,
-                                          color: Colors.red,
-                                        ),
-                                        onPressed: () {
-                                          controller.toggleFavorite(pet['id']);
-                                        },
-                                      ),
+                                      // IconButton(
+                                      //   icon: Icon(
+                                      //     controller.favoritePets.contains(pet.petId)
+                                      //         ? Icons.favorite
+                                      //         : Icons.favorite_border,
+                                      //     color: Colors.red,
+                                      //   ),
+                                      //   onPressed: () {
+                                      //     controller.toggleFavorite(pet.petId as int);
+                                      //   },
+                                      // ),
                                     ],
                                   ),
                                   Text(
-                                    pet['breed'],
+                                    pet.breed!,
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.grey[600],
                                     ),
                                   ),
                                   Text(
-                                    pet['age'],
+                                    'Edad: ${pet.age} meses',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey[600],
@@ -101,10 +100,10 @@ class PetListScreen extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Icon(Icons.location_on, size: 16, color: Colors.grey),
+                                      Icon(Icons.monitor_weight, size: 16, color: Colors.grey),
                                       SizedBox(width: 4),
                                       Text(
-                                        pet['distance'],
+                                        '${pet.weight} kg',
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.grey[600],

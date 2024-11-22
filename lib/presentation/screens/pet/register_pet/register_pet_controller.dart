@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:adopme_frontend/data/network/nestjs/analyzer_image_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,7 @@ import '../../../../models/pet/create_pet.dart';
 class RegisterPetController extends GetxController {
   final analyzerImageRepository = AnalyzerImageRepository();
   final petRepository = PetRepository();
+  FirebaseAuth auth = FirebaseAuth.instance;
   final utils = Utils();
   File? image;
   bool isUploading = false;
@@ -91,6 +93,10 @@ class RegisterPetController extends GetxController {
       return;
     }
 
+    String? userId = auth.currentUser!.uid;
+
+    print('Create pet userId: $userId');
+
     final createPet = CreatePet(
       name: nameController.text,
       weight: weightController.text,
@@ -103,7 +109,7 @@ class RegisterPetController extends GetxController {
       location: '', // Add location if needed
       color: colorController.text,
       imageUrl: responseData.imageUrl,
-      reportingUserId: '', // Add reportingUserId if needed
+      reportingUserId: userId, // Add reportingUserId if needed
     );
 
     try {

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../data/network/nestjs/pet_repository.dart';
+import '../../../../models/pet/pet_response.dart';
 import 'compare_image_controller.dart';
 
 class CompareImageScreen extends StatelessWidget {
@@ -10,7 +11,7 @@ class CompareImageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String imageUrl = Get.arguments;
+    final PetResponse pet = Get.arguments;
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -74,7 +75,7 @@ class CompareImageScreen extends StatelessWidget {
                         SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () {
-                            controller.uploadImage(context, imageUrl);
+                            controller.uploadImage(context, pet.imageUrl!);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red,

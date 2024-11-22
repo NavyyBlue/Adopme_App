@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:adopme_frontend/common/utils/utils.dart';
 import 'package:adopme_frontend/data/network/nestjs/pet_repository.dart';
 import 'package:adopme_frontend/models/pet/create_pet.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +14,7 @@ import '../../../../models/analyzer_image/get_features_pet/get_features_pet_resp
 class ReportMissingPetController extends GetxController {
   final analyzerImageRepository = AnalyzerImageRepository();
   final petRepository = PetRepository();
+  FirebaseAuth auth = FirebaseAuth.instance;
   File? image;
   bool isUploading = false;
   late GetFeaturesPetResponse responseData;
@@ -92,6 +94,10 @@ class ReportMissingPetController extends GetxController {
       return;
     }
 
+    String? userId = auth.currentUser!.uid;
+
+    print('Report Missing userId: $userId');
+
     final createPet = CreatePet(
       name: nameController.text,
       weight: weightController.text,
@@ -104,7 +110,7 @@ class ReportMissingPetController extends GetxController {
       location: locationController.text,
       color: colorController.text,
       imageUrl: responseData.imageUrl,
-      reportingUserId: '', // Add reportingUserId if needed
+      reportingUserId: userId,
     );
 
     try {

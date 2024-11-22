@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../adoption_confirmation/adoption_confirmation_screen.dart';
 import 'adoption_form_controller.dart';
 
 class AdoptionFormScreen extends StatelessWidget {
-  final AdoptionFormController controller = AdoptionFormController();
+  final AdoptionFormController controller = Get.put(AdoptionFormController());
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +33,21 @@ class AdoptionFormScreen extends StatelessWidget {
             const SizedBox(height: 24),
             Row(
               children: [
-                Checkbox(
-                  value: controller.acceptTerms,
+                Obx(() => Checkbox(
+                  value: controller.acceptTerms.value,
                   onChanged: (value) {
                     controller.toggleAcceptTerms(value ?? false);
                   },
-                ),
+                )),
                 const Text('Acepto los términos y condiciones.'),
               ],
             ),
             const Spacer(),
-            ElevatedButton(
-              onPressed: controller.acceptTerms ? controller.submitForm : null,
+            Obx(() => ElevatedButton(
+              onPressed: controller.acceptTerms.value ? () {
+                controller.submitForm();
+                Get.to(() => AdoptionConfirmationScreen());
+              } : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF002D63),
                 shape: RoundedRectangleBorder(
@@ -50,7 +55,7 @@ class AdoptionFormScreen extends StatelessWidget {
                 ),
               ),
               child: const Text('Continuar'),
-            ),
+            )),
           ],
         ),
       ),

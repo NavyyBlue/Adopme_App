@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'adoption_confirmation_controller.dart';
 
@@ -49,13 +50,13 @@ class AdoptionConfirmationScreen extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: () => controller.openWhatsApp(),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green, // Color del botón
+                    backgroundColor: Colors.green, // Color del botón
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  icon: const Icon(Icons.whatsapp, color: Colors.white),
+                  icon: Icon(FontAwesomeIcons.whatsapp, color: Colors.white),
                   label: const Text(
                     'Contactar',
                     style: TextStyle(color: Colors.white, fontSize: 16),
