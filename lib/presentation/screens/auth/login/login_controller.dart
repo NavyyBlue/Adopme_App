@@ -5,6 +5,7 @@ import 'package:adopme_frontend/presentation/screens/auth/login/login_screen.dar
 import 'package:adopme_frontend/presentation/screens/auth/preferences/preferences_screen.dart';
 import 'package:adopme_frontend/services/auth_service.dart';
 import 'package:adopme_frontend/services/preferences_service.dart';
+import 'package:adopme_frontend/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:adopme_frontend/presentation/screens/home/home_screen.dart';
@@ -38,6 +39,7 @@ class LoginController extends GetxController {
 
     if(idToken != null){
       AuthService.to.setIdToken(idToken!);
+      Get.put(UserService());
     }
 
     if (user != null) {

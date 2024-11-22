@@ -3,6 +3,7 @@ import 'package:adopme_frontend/firebase_options.dart';
 import 'package:adopme_frontend/presentation/screens/auth/login/login_controller.dart';
 import 'package:adopme_frontend/services/auth_service.dart';
 import 'package:adopme_frontend/services/preferences_service.dart';
+import 'package:adopme_frontend/services/user_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

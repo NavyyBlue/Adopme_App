@@ -3,7 +3,7 @@ import 'package:adopme_frontend/models/preferences/preferences_model.dart';
 class UserProfile {
   String? userId;
   PetPreferences? petPreferences;
-  String phoneNumber;
+  String? phoneNumber;
   String? studentCode;
   String? faculty;
   String? career;
@@ -11,7 +11,7 @@ class UserProfile {
   UserProfile({
     this.userId,
     this.petPreferences,
-    required this.phoneNumber,
+    this.phoneNumber,
     this.studentCode,
     this.faculty,
     this.career,
@@ -43,7 +43,7 @@ class UserProfile {
   bool isEmpty() {
     return userId == null &&
         (petPreferences == null || petPreferences!.isEmpty()) &&
-        phoneNumber.isEmpty &&
+        (phoneNumber == null || phoneNumber!.isEmpty) &&
         (studentCode == null || studentCode!.isEmpty) &&
         (faculty == null || faculty!.isEmpty) &&
         (career == null || career!.isEmpty);

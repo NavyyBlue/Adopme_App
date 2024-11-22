@@ -15,7 +15,7 @@ class DioClient {
       },
       onError: (DioError e, handler) {
         return handler.next(e);
-      },
+      },  
       onResponse: (response, handler) {
         return handler.next(response);
       },

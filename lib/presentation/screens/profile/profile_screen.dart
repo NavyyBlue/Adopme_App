@@ -1,4 +1,6 @@
+import 'package:adopme_frontend/models/user/user_profile.dart';
 import 'package:adopme_frontend/services/preferences_service.dart';
+import 'package:adopme_frontend/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +11,10 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User? user = FirebaseAuth.instance.currentUser;
+    final UserService userService = UserService.to;
     final controller = Get.find<LoginController>();
+
+    final UserProfile? userProfileData = userService.userProfile;
 
     return Scaffold(
       appBar: AppBar(
@@ -98,7 +103,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 5),
               // TextField de Phone Number
               DisabledTextField(
-                hintText: user.phoneNumber ?? 'No disponible',
+                hintText: userProfileData!.phoneNumber ?? 'No disponible',
               ),
 
               // Text Email
@@ -115,7 +120,6 @@ class ProfileScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   controller.signOut();
-                  Get.offAll(() => LoginScreen());
                 },
                 child: Text('Cerrar sesión'),
               ),
