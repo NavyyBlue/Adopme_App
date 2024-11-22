@@ -75,4 +75,33 @@ class PetRepository {
       throw Exception('Time out');
     }
   }
+
+
+  Future<Map<String, dynamic>> comparePets(String filename, String file, String imageUrl) async {
+    try {
+      print("PetRepository comparePets");
+      final response = await dio.post(
+        '${NetworkConstants.baseUrl}${NetworkConstants.analyzerImageRoute}${NetworkConstants.comparePetsEndpoint}',
+        data: {
+          'filename': filename,
+          'file': file,
+          'imageUrl': imageUrl,
+        },
+      ).timeout(const Duration(seconds: 10), onTimeout: () {
+        throw TimeoutException('Time out');
+      });
+      print("Response comparePets");
+      print(response.data);
+      print(response);
+      if (response.statusCode == 201) {
+        return response.data;
+      } else {
+        throw Exception('Failed to compare pets');
+      }
+    } on DioException catch (e) {
+      throw Exception(e.message);
+    } on TimeoutException catch (_) {
+      throw Exception('Time out');
+    }
+  }
 }

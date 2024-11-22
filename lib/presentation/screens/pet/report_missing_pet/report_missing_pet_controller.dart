@@ -1,16 +1,14 @@
 import 'dart:io';
+
+import 'package:adopme_frontend/common/utils/utils.dart';
+import 'package:adopme_frontend/data/network/nestjs/pet_repository.dart';
+import 'package:adopme_frontend/models/pet/create_pet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:adopme_frontend/data/local/database_helper.dart';
-import 'package:adopme_frontend/data/local/missing_pets_database_helper.dart';
-import 'package:adopme_frontend/common/utils/utils.dart';
 
 import '../../../../data/network/nestjs/analyzer_image_repository.dart';
 import '../../../../models/analyzer_image/get_features_pet/get_features_pet_response.dart';
-
-import 'package:adopme_frontend/data/network/nestjs/pet_repository.dart';
-import 'package:adopme_frontend/models/pet/create_pet.dart';
 
 class ReportMissingPetController extends GetxController {
   final analyzerImageRepository = AnalyzerImageRepository();
@@ -51,7 +49,7 @@ class ReportMissingPetController extends GetxController {
       final base64Image = await utils.convertImageToBytes(image!);
       final fileName = 'missing_pet/${await utils.generateImageName(image!)}';
       responseData =
-      await analyzerImageRepository.getFeaturesPet(fileName, base64Image);
+          await analyzerImageRepository.getFeaturesPet(fileName, base64Image);
 
       speciesController.text = responseData.species;
       breedController.text = responseData.breed;
