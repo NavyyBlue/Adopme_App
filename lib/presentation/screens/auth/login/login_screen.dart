@@ -1,6 +1,8 @@
 import 'package:adopme_frontend/presentation/widgets/google_signin_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../component/textfield.dart';
+import '../register/register_screen.dart';
 import 'login_controller.dart';
 import 'package:adopme_frontend/presentation/widgets/buttons/rounded_button.dart';
 
@@ -15,7 +17,7 @@ class LoginScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: controller.formKey,
+            //key: controller.formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -35,17 +37,9 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                TextFormField(
+                AuthTextField(
                   controller: controller.emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    filled: true,
-                    fillColor: Colors.teal[50],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
+                  labelText: 'Email',
                   validator: (value) {
                     if (!controller.validateEmail(value!)) {
                       return 'Please enter a valid email';
@@ -53,19 +47,11 @@ class LoginScreen extends StatelessWidget {
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
-                TextFormField(
+                SizedBox(height: 15),
+                AuthTextField(
                   controller: controller.passwordController,
+                  labelText: 'Contraseña',
                   obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Contraseña',
-                    filled: true,
-                    fillColor: Colors.teal[50],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
                   validator: (value) {
                     if (!controller.validatePassword(value!)) {
                       return 'Password must be at least 6 characters';
@@ -93,7 +79,7 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
-                    // Navegar a la pantalla de registro
+                    Get.to(() => RegisterScreen());
                   },
                   child: Text(
                     '¿No tienes cuenta? Regístrate',

@@ -1,3 +1,4 @@
+import 'package:adopme_frontend/presentation/screens/pet/pet_selection/pet_selection_screen.dart';
 import 'package:adopme_frontend/presentation/screens/profile/profile_screen.dart';
 import 'package:adopme_frontend/presentation/screens/vet/vet_list/vet_screen.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:adopme_frontend/presentation/screens/pet/pet_list/pet_list_screen.dart';
 import 'package:adopme_frontend/presentation/screens/pet/register_pet/register_pet_screen.dart';
+import 'package:adopme_frontend/presentation/screens/feed/feed_screen.dart';
 import '../../widgets/bottom_sheet/bottom_sheet_options.dart';
 import '../other_page.dart';
 import '../../widgets/bottom_nav_bar.dart';
@@ -13,8 +15,8 @@ import 'home_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   static final List<Widget> _widgetOptions = <Widget>[
-    PetListScreen(),
-    OtherPage(),
+    FeedScreen(),
+    PetSelectionScreen(),
     RegisterPetScreen(),
     VetScreen(),
     ProfileScreen(),

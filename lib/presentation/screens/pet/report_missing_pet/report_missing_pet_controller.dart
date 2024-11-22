@@ -1,16 +1,18 @@
 import 'dart:io';
+
+import 'package:adopme_frontend/common/utils/utils.dart';
+import 'package:adopme_frontend/data/network/nestjs/pet_repository.dart';
+import 'package:adopme_frontend/models/pet/create_pet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:adopme_frontend/data/local/database_helper.dart';
-import 'package:adopme_frontend/data/local/missing_pets_database_helper.dart';
-import 'package:adopme_frontend/common/utils/utils.dart';
 
 import '../../../../data/network/nestjs/analyzer_image_repository.dart';
 import '../../../../models/analyzer_image/get_features_pet/get_features_pet_response.dart';
 
 class ReportMissingPetController extends GetxController {
   final analyzerImageRepository = AnalyzerImageRepository();
+  final petRepository = PetRepository();
   File? image;
   bool isUploading = false;
   late GetFeaturesPetResponse responseData;
@@ -25,6 +27,7 @@ class ReportMissingPetController extends GetxController {
   final colorController = TextEditingController();
   final descriptionController = TextEditingController();
   final locationController = TextEditingController();
+  final genderController = TextEditingController(); // New controller for sexo
 
   Future<void> pickImage() async {
     final picker = ImagePicker();
@@ -78,7 +81,8 @@ class ReportMissingPetController extends GetxController {
         ageController.text.isEmpty ||
         colorController.text.isEmpty ||
         descriptionController.text.isEmpty ||
-        locationController.text.isEmpty) {
+        locationController.text.isEmpty ||
+        genderController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please fill in all fields'),
@@ -88,29 +92,40 @@ class ReportMissingPetController extends GetxController {
       return;
     }
 
-    final missingPet = {
-      'name': nameController.text,
-      'species': speciesController.text,
-      'breed': breedController.text,
-      'weight': double.tryParse(weightController.text) ?? 0.0,
-      'size': sizeController.text,
-      'age': int.tryParse(ageController.text) ?? 0,
-      'color': colorController.text,
-      'imageUrl': responseData.imageUrl,
-      'description': descriptionController.text,
-      'location': locationController.text,
-    };
-
-    await MissingPetsDatabaseHelper.insertMissingPet(
-        await DatabaseHelper().database, missingPet);
-
-    if (!context.mounted) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Missing pet reported successfully!'),
-        backgroundColor: Colors.green,
-      ),
+    final createPet = CreatePet(
+      name: nameController.text,
+      weight: weightController.text,
+      size: sizeController.text,
+      species: speciesController.text,
+      breed: breedController.text,
+      age: ageController.text,
+      gender: genderController.text,
+      description: descriptionController.text,
+      location: locationController.text,
+      color: colorController.text,
+      imageUrl: responseData.imageUrl,
+      reportingUserId: '', // Add reportingUserId if needed
     );
+
+    try {
+      await petRepository.createPet(createPet, true); // Pass true for isMissing
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Missing pet reported successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to report missing pet'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }

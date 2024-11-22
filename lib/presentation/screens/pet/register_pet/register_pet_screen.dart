@@ -191,6 +191,29 @@ class RegisterPetScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 20),
+                    DropdownButtonFormField<String>(
+                      value: null,
+                      hint: Text('Sexo'),
+                      items: ['Macho', 'Hembra']
+                          .map((sexo) => DropdownMenuItem(
+                        value: sexo,
+                        child: Text(sexo),
+                      ))
+                          .toList(),
+                      onChanged: (value) {
+                        controller.genderController.text = value ?? '';
+                      },
+                      decoration: InputDecoration(
+                        fillColor: app_colors
+                            .Colors.backgroundTextFieldRegisterPetColor,
+                        filled: true,
+                        hintText: 'Sexo',
+                        hintStyle: TextStyle(
+                          color: app_colors.Colors.textTextFieldRegisterPetColor,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
