@@ -35,6 +35,15 @@ class EmailVerificationController extends GetxController {
       idToken = await auth.currentUser!.getIdToken();
       AuthService.to.setIdToken(idToken!);
       Get.offAll(() => LoginScreen());
+    } else {
+      Get.snackbar(
+        "Error",
+        "Por favor verifica tu email.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+        duration: Duration(seconds: 3),
+      );
     }
   }
 
@@ -48,6 +57,14 @@ class EmailVerificationController extends GetxController {
             timer.cancel();
             idToken = await user!.getIdToken();
             AuthService.to.setIdToken(idToken!);
+            Get.snackbar(
+              "Email verificado",
+              "Tu email ha sido verificado.",
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              duration: Duration(seconds: 3),
+            );
             Get.offAll(() => LoginScreen());
           }
         }

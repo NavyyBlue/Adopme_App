@@ -93,6 +93,9 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                             }
                           });
                         },
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.transparent)),
+                        backgroundColor: Color(0xFFE3EDFB),
+                        selectedColor: Color(0xFFB0D4F8),
                       );
                     }).toList(),
                   ),
@@ -114,6 +117,9 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                             }
                           });
                         },
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.transparent)),
+                        backgroundColor: Color(0xFFE3EDFB),
+                        selectedColor: Color(0xFFB0D4F8),
                       );
                     }).toList(),
                   ),
@@ -136,6 +142,9 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                             }
                           });
                         },
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.transparent)),
+                        backgroundColor: Color(0xFFE3EDFB),
+                        selectedColor: Color(0xFFB0D4F8),
                       );
                     }).toList(),
                   ),
@@ -157,6 +166,9 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                             }
                           });
                         },
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.transparent)),
+                        backgroundColor: Color(0xFFE3EDFB),
+                        selectedColor: Color(0xFFB0D4F8),
                       );
                     }).toList(),
                   ),

@@ -18,6 +18,11 @@ class RegisterController extends GetxController {
   Future<void> register() async {
     if (formKey.currentState!.validate()) {
       try {
+        // Add country code if not present
+        if (!phoneController.text.startsWith('+51')) {
+          phoneController.text = '+51${phoneController.text}';
+        }
+
         await auth.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
@@ -28,7 +33,7 @@ class RegisterController extends GetxController {
             userId: auth.currentUser!.uid,
             phoneNumber: phoneController.text
         ));
-        auth.currentUser!.sendEmailVerification();
+        //auth.currentUser!.sendEmailVerification();
         Get.offAll(() => EmailVerificationScreen());
       } on FirebaseAuthException catch (e) {
         Get.snackbar(

@@ -94,6 +94,11 @@ class LoginController extends GetxController {
         email: email,
         password: password,
       );
+
+      // Clean the text fields
+      emailController.clear();
+      passwordController.clear();
+
       screenRedirect();
     } on FirebaseAuthException catch (e) {
       String message = FirebaseAuthErrorMessages.getMessage(e.code);
@@ -119,6 +124,7 @@ class LoginController extends GetxController {
         idToken: googleAuth?.idToken,
       );
       await auth.signInWithCredential(credential);
+      screenRedirect();
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         "Error",

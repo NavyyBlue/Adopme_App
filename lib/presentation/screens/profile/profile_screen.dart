@@ -1,11 +1,9 @@
 import 'package:adopme_frontend/models/user/user_profile.dart';
-import 'package:adopme_frontend/services/preferences_service.dart';
 import 'package:adopme_frontend/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:adopme_frontend/presentation/screens/auth/login/login_controller.dart';
-import 'package:adopme_frontend/presentation/screens/auth/login/login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -37,6 +35,7 @@ class ProfileScreen extends StatelessWidget {
                       child: ClipOval(
                         // child: Image.network('src'),
                         child: Image.network(
+                          user.photoURL ??
                           'https://media.licdn.com/dms/image/v2/C4E03AQEp55lSR4WuIw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1657679721882?e=2147483647&v=beta&t=JEDBdZmahqY1tiw1kWegxfx20OOG6QIDfUdtU3EBTiE',
                           width: 120,
                         ),
@@ -68,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
               // Nombre de usuario
               Center(
                 child: Text(
-                  'Estiven Salvador\nHurtado Santos',
+                  user.displayName ?? 'No disponible',
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
@@ -79,22 +78,28 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
 
-              // Text nombre
+              // Código de estudiante
               const SizedBox(height: 20),
-              Text('Profile Name'),
+              Text('Código de estudiante'),
               const SizedBox(height: 5),
-              // TextField para Nombre(s)
               DisabledTextField(
-                hintText: user.displayName ?? 'No disponible',
+                hintText: userProfileData?.studentCode ?? 'No disponible',
               ),
 
-              // Text Apellidos
+              // Escuela
               const SizedBox(height: 10),
-              Text('Profile Last Name'),
+              Text('Escuela'),
               const SizedBox(height: 5),
-              // TextField Apellidos
               DisabledTextField(
-                hintText: user.displayName ?? 'No disponible',
+                hintText: userProfileData?.career ?? 'No disponible',
+              ),
+
+              // Facultad
+              const SizedBox(height: 10),
+              Text('Facultad'),
+              const SizedBox(height: 5),
+              DisabledTextField(
+                hintText: userProfileData?.faculty ?? 'No disponible',
               ),
 
               // Text Phone Number
@@ -103,7 +108,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 5),
               // TextField de Phone Number
               DisabledTextField(
-                hintText: userProfileData!.phoneNumber ?? 'No disponible',
+                hintText: userProfileData?.phoneNumber ?? 'No disponible',
               ),
 
               // Text Email
