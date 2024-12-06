@@ -10,6 +10,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LoginController());
+    final showConfirmPassword = ValueNotifier<bool>(false);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -46,6 +47,7 @@ class LoginScreen extends StatelessWidget {
                     }
                     return null;
                   },
+                  showPassword: ValueNotifier<bool>(false),
                 ),
                 SizedBox(height: 15),
                 AuthTextField(
@@ -58,6 +60,7 @@ class LoginScreen extends StatelessWidget {
                     }
                     return null;
                   },
+                  showPassword: showConfirmPassword,
                 ),
                 SizedBox(height: 20),
                 RoundedButton(

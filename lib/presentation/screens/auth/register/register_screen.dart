@@ -12,6 +12,8 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(RegisterController());
+    final showPassword = ValueNotifier<bool>(false);
+    final showConfirmPassword = ValueNotifier<bool>(false);
 
     return Scaffold(
       body: SafeArea(
@@ -54,6 +56,7 @@ class RegisterScreen extends StatelessWidget {
                           }
                           return null;
                         },
+                        showPassword: ValueNotifier<bool>(false),
                       ),
                       SizedBox(height: 15),
                       AuthTextField(
@@ -65,6 +68,7 @@ class RegisterScreen extends StatelessWidget {
                           }
                           return null;
                         },
+                        showPassword: ValueNotifier<bool>(false),
                       ),
                       SizedBox(height: 15),
                       AuthTextField(
@@ -76,6 +80,7 @@ class RegisterScreen extends StatelessWidget {
                           }
                           return null;
                         },
+                        showPassword: ValueNotifier<bool>(false),
                       ),
                       SizedBox(height: 15),
                       AuthTextField(
@@ -87,6 +92,7 @@ class RegisterScreen extends StatelessWidget {
                           }
                           return null;
                         },
+                        showPassword: ValueNotifier<bool>(false),
                       ),
                       SizedBox(height: 15),
                       AuthTextField(
@@ -99,6 +105,23 @@ class RegisterScreen extends StatelessWidget {
                           }
                           return null;
                         },
+                        showPassword: showPassword,
+                      ),
+                      SizedBox(height: 15),
+                      AuthTextField(
+                        controller: controller.passwordConfirmController,
+                        labelText: 'Confirmar contraseña',
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor confirme su contraseña';
+                          }
+                          if (value != controller.passwordController.text) {
+                            return 'Las contraseñas no coinciden';
+                          }
+                          return null;
+                        },
+                        showPassword: showConfirmPassword,
                       ),
                       SizedBox(height: 20),
                       RoundedButton(

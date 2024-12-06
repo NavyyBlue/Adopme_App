@@ -7,6 +7,7 @@ class UserProfile {
   String? studentCode;
   String? faculty;
   String? career;
+  String? photoUrl;
 
   UserProfile({
     this.userId,
@@ -18,25 +19,27 @@ class UserProfile {
   });
 
   UserProfile.fromJson(Map<String, dynamic> json)
-      : userId = json['userId'],
-        petPreferences = json['petPreferences'] != null
-            ? PetPreferences.fromJson(json['petPreferences'])
-            : null,
-        phoneNumber = json['phoneNumber'],
-        studentCode = json['studentCode'],
-        faculty = json['faculty'],
-        career = json['career'];
+      : userId = json['userId'] ?? '',
+        petPreferences = json['pet_preferences'] != null
+            ? PetPreferences.fromJson(json['pet_preferences'])
+            : PetPreferences(),
+        phoneNumber = json['phoneNumber'] ?? '',
+        studentCode = json['studentCode'] ?? '',
+        faculty = json['faculty'] ?? '',
+        career = json['career'] ?? '',
+        photoUrl = json['photoUrl'] ?? '';
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['userId'] = userId;
     if (petPreferences != null) {
-      data['petPreferences'] = petPreferences!.toJson();
+      data['pet_preferences'] = petPreferences!.toJson();
     }
     data['phoneNumber'] = phoneNumber;
     data['studentCode'] = studentCode;
     data['faculty'] = faculty;
     data['career'] = career;
+    data['photoUrl'] = photoUrl;
     return data;
   }
 
@@ -46,6 +49,7 @@ class UserProfile {
         (phoneNumber == null || phoneNumber!.isEmpty) &&
         (studentCode == null || studentCode!.isEmpty) &&
         (faculty == null || faculty!.isEmpty) &&
-        (career == null || career!.isEmpty);
+        (career == null || career!.isEmpty) &&
+        (photoUrl == null || photoUrl!.isEmpty);
   }
 }

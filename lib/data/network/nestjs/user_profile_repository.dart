@@ -27,6 +27,20 @@ class UserProfileRepository {
     }
   }
 
+  Future<void> updateUserProfile(UserProfile payload) async {
+    try {
+      final response = await _dio.put('$baseUrl$preferencesRoute', data: payload.toJson());
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update user profile');
+      }
+    } on DioException catch (e) {
+      throw Exception(e.message);
+    } on TimeoutException catch (_) {
+      throw Exception('Time out');
+    }
+  }
+
   Future<UserProfile> getUserProfile() async {
     try {
       final response = await _dio.get('$baseUrl$preferencesRoute');
@@ -42,5 +56,9 @@ class UserProfileRepository {
     } on TimeoutException catch (_) {
       throw Exception('Time out');
     }
+  }
+
+  Future<void> verifyEmail(String email) async {
+      await _dio.post('$baseUrl$preferencesRoute/verify-email', data: {'email': email});
   }
 }

@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:adopme_frontend/constants/firebase_auth_error_messages.dart';
 import 'package:adopme_frontend/data/network/nestjs/preferences_repository.dart';
+import 'package:adopme_frontend/data/network/nestjs/user_profile_repository.dart';
 import 'package:adopme_frontend/presentation/screens/auth/email_verification/email_verification_screen.dart';
 import 'package:adopme_frontend/presentation/screens/auth/login/login_screen.dart';
 import 'package:adopme_frontend/presentation/screens/auth/preferences/preferences_screen.dart';
 import 'package:adopme_frontend/services/auth_service.dart';
 import 'package:adopme_frontend/services/preferences_service.dart';
 import 'package:adopme_frontend/services/user_service.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:adopme_frontend/presentation/screens/home/home_screen.dart';
@@ -14,6 +18,7 @@ import 'package:get/get.dart';
 
 class LoginController extends GetxController {
   final PreferencesRepository preferencesRepository = PreferencesRepository();
+  final userProfileRepository = UserProfileRepository();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   //final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -24,12 +29,6 @@ class LoginController extends GetxController {
 
   @override
   void onReady() {
-    /*
-    super.onReady();
-    _user = Rx<User?>(auth.currentUser);
-    _user.bindStream(auth.userChanges());
-    ever(_user, _initialScreen);
-     */
     screenRedirect();
   }
 
@@ -117,11 +116,14 @@ class LoginController extends GetxController {
   Future<void> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+
+      await verifyEmail(googleUser!.email);
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
       await auth.signInWithCredential(credential);
       screenRedirect();
@@ -134,6 +136,29 @@ class LoginController extends GetxController {
         colorText: Colors.white,
         duration: Duration(seconds: 3),
       );
+    }
+  }
+
+  Future<void> verifyEmail(String email) async {
+    try {
+      await userProfileRepository.verifyEmail(email);
+    } on DioException catch (e) {
+      if (e.response!.data['message'] == 'invalid-email' || e.response!.data['message'][0] == 'Email must be from the \"unmsm.edu.pe\" domain') {
+        Get.snackbar("Error", "Ingresa un correo institucional válido",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.redAccent,
+            colorText: Colors.white,
+            duration: Duration(seconds: 3));
+      } else {
+        Get.snackbar("Error", "Error desconocido",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.redAccent,
+            colorText: Colors.white,
+            duration: Duration(seconds: 3));
+      }
+      rethrow;
+    } on TimeoutException catch (_) {
+      throw Exception('Time out');
     }
   }
 
