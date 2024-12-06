@@ -20,8 +20,8 @@ class UserProfile {
 
   UserProfile.fromJson(Map<String, dynamic> json)
       : userId = json['userId'] ?? '',
-        petPreferences = json['pet_preferences'] != null
-            ? PetPreferences.fromJson(json['pet_preferences'])
+        petPreferences = json['petPreferences'] != null
+            ? PetPreferences.fromJson(json['petPreferences'])
             : PetPreferences(),
         phoneNumber = json['phoneNumber'] ?? '',
         studentCode = json['studentCode'] ?? '',
@@ -33,7 +33,7 @@ class UserProfile {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['userId'] = userId;
     if (petPreferences != null) {
-      data['pet_preferences'] = petPreferences!.toJson();
+      data['petPreferences'] = petPreferences!.toJson();
     }
     data['phoneNumber'] = phoneNumber;
     data['studentCode'] = studentCode;

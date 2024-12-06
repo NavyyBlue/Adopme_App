@@ -58,14 +58,17 @@ class _ReviewCardState extends State<ReviewCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.review.reviewTranslatedText!,
-                              maxLines: _isExpanded || _changeExpanded ? null : 2,
-                              overflow: _isExpanded || _changeExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Colors.grey[700],
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w500,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 24.0), // Ajusta el valor según sea necesario
+                              child: Text(
+                                widget.review.reviewTranslatedText!,
+                                maxLines: _isExpanded || _changeExpanded ? null : 2,
+                                overflow: _isExpanded || _changeExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.grey[700],
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                             if (!_isExpanded)
@@ -86,7 +89,7 @@ class _ReviewCardState extends State<ReviewCard> {
                               ),
                           ],
                         ),
-                      ),
+                      )
                     ],
                   ),
                   const SizedBox(height: 5.0),
@@ -111,6 +114,11 @@ class _ReviewCardState extends State<ReviewCard> {
             right: 8.0,
             child: Tooltip(
               message: sentiment.string,
+              child: Text(
+                sentiment.emoji,
+                style: TextStyle(fontSize: 18.0),
+              ),
+              /*
               child: Container(
                 width: 12.0,
                 height: 12.0,
@@ -119,6 +127,8 @@ class _ReviewCardState extends State<ReviewCard> {
                   shape: BoxShape.circle,
                 ),
               ),
+
+               */
             ),
           ),
         ],

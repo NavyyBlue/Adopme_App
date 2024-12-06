@@ -4,13 +4,16 @@ import 'package:adopme_frontend/common/utils/pet_type_enum.dart';
 import 'package:adopme_frontend/presentation/screens/auth/preferences/preferences_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:adopme_frontend/presentation/widgets/buttons/preference_button.dart';
 import 'package:adopme_frontend/presentation/widgets/buttons/rounded_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../models/preferences/preferences_model.dart';
 
 class PreferencesScreen extends StatefulWidget {
+  final bool isEditing;
+
+  PreferencesScreen({this.isEditing = false});
+
   @override
   _PreferencesScreenState createState() => _PreferencesScreenState();
 }
@@ -29,6 +32,35 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
     '10 - 20 Kg.': PetSize(min: 10, max: 20),
     '20 Kg. +': PetSize(min: 20, max: null),
   };
+
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isEditing) {
+      loadPreferences();
+    }
+  }
+
+  Future<void> loadPreferences() async {
+    final preferences = await preferencesController.getPreferences();
+    if (preferences != null) {
+      setState(() {
+        petType = preferences.petType?.map((type) => PetType.values.firstWhere((e) => e.value == type)).toSet() ?? {};
+        petColor = preferences.color?.map((color) => PetColor.values.firstWhere((e) => e.value == color)).toSet() ?? {};
+        petAge = preferences.age?.map((age) => PetAge.values.firstWhere((e) => e.value == age)).toSet() ?? {};
+        petSize = preferences.size?.toSet() ?? {};
+      });
+    } else {
+      Get.snackbar(
+        'Error',
+        'No se pudieron cargar las preferencias',
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -182,8 +214,13 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                         age: petAge.map((age) => age.value).toList(),
                         color: petColor.map((color) => color.value).toList(),
                       );
+
+                      if (widget.isEditing) {
+                        preferencesController.updatePreferences(preferences);
+                        return;
+                      }
                       preferencesController.addPreferences(preferences);
-                      print(preferences.toJson());
+
                       // aqui para registrar al user
                     },
                   ),

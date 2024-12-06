@@ -1,5 +1,5 @@
 class NetworkConstants{
-  static const String baseUrl = "http://192.168.101.82:3000";
+  static const String baseUrl = "http://10.0.2.2:3000";
   static const String analyzerImageRoute = "/analyzer-image";
   static const String getFeaturesPetEndpoint = "/get-features-pet";
   static const String comparePetsEndpoint = "/compare-pets";

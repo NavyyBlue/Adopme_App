@@ -26,6 +26,23 @@ extension SentimentExtension on Sentiment {
   }
 }
 
+extension SentimentEmojiExtension on Sentiment {
+  String get emoji {
+    switch (this) {
+      case Sentiment.POSITIVE:
+        return '😊';
+      case Sentiment.NEGATIVE:
+        return '😞';
+      case Sentiment.MIXED:
+        return '😐';
+      case Sentiment.NEUTRAL:
+        return '😶';
+      default:
+        return '😶';
+    }
+  }
+}
+
 extension SentimentStringExtension on Sentiment {
   String get string {
     switch (this) {

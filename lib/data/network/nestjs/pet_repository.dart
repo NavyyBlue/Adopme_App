@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:adopme_frontend/constants/network_constants.dart';
+import 'package:adopme_frontend/data/dio_client.dart';
 
 import 'package:dio/dio.dart';
 
@@ -8,9 +9,9 @@ import '../../../models/pet/create_pet.dart';
 import '../../../models/pet/pet_response.dart';
 
 class PetRepository {
-  final Dio dio;
+  final Dio dio = DioClient().dio;
 
-  PetRepository() : dio = Dio();
+  PetRepository();
 
   Future<void> createPet(CreatePet createPet, bool isMissing) async {
     try {
