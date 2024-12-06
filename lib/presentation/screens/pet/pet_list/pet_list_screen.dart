@@ -90,7 +90,7 @@ class PetListScreen extends StatelessWidget {
                         var pet = controller.filteredPets[index];
                         return GestureDetector(
                           onTap: () {
-                            Get.to(() => PetProfileScreen());
+                            Get.to(() => PetProfileScreen(), arguments: pet);
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
