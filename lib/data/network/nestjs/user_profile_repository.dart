@@ -61,4 +61,22 @@ class UserProfileRepository {
   Future<void> verifyEmail(String email) async {
       await _dio.post('$baseUrl$preferencesRoute/verify-email', data: {'email': email});
   }
+
+  Future<UserProfile> getUserById(String userId) async {
+    try {
+      final response = await _dio.get('$baseUrl$preferencesRoute/$userId');
+
+
+      if (response.data == null || response.data == '') {
+        return UserProfile();
+      }
+      final userProfile = UserProfile.fromJson(response.data);
+
+      return userProfile;
+    } on DioException catch (e) {
+      throw Exception(e.message);
+    } on TimeoutException catch (_) {
+      throw Exception('Time out');
+    }
+  }
 }

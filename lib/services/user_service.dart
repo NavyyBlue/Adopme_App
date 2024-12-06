@@ -1,5 +1,6 @@
 import 'package:adopme_frontend/data/network/nestjs/user_profile_repository.dart';
 import 'package:adopme_frontend/models/user/user_profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class UserService extends GetxService {

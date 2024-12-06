@@ -11,4 +11,7 @@ class NetworkConstants{
   static const String petCreateEndpoint = "/create";
   static const String petGetAllEndpoint = "/all";
   static const String userRoute = "/user";
+  static const String userById = "/{userId}";
+  static const String adoptionsFormsRoute = "/adoptions-form";
+  static const String adoptionsFormsCreateEndpoint = "/create";
 }

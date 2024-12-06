@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../models/pet/pet_response.dart';
 import '../adoption_confirmation/adoption_confirmation_screen.dart';
 import 'adoption_form_controller.dart';
 
 class AdoptionFormScreen extends StatelessWidget {
+  final PetResponse pet;
+
+  AdoptionFormScreen({super.key, required this.pet});
   final AdoptionFormController controller = Get.put(AdoptionFormController());
 
   @override
@@ -44,9 +48,11 @@ class AdoptionFormScreen extends StatelessWidget {
             ),
             const Spacer(),
             Obx(() => ElevatedButton(
-              onPressed: controller.acceptTerms.value ? () {
-                controller.submitForm();
-                Get.to(() => AdoptionConfirmationScreen());
+              onPressed: controller.acceptTerms.value ? () async {
+                bool isValid = await controller.submitForm(pet.petId!);
+                if (isValid) {
+                  Get.to(() => AdoptionConfirmationScreen(pet: pet));
+                }
               } : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF002D63),
@@ -55,20 +61,9 @@ class AdoptionFormScreen extends StatelessWidget {
                 ),
               ),
               child: const Text('Continuar'),
-            )),
+            ))
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
-        ],
-        currentIndex: 4,
-        onTap: (index) {},
       ),
     );
   }

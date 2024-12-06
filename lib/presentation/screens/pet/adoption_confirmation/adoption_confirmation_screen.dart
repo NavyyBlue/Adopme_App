@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import '../../../../models/pet/pet_response.dart';
 import 'adoption_confirmation_controller.dart';
 
 class AdoptionConfirmationScreen extends StatelessWidget {
-  final AdoptionConfirmationController controller = Get.put(AdoptionConfirmationController());
+  final PetResponse pet;
+  final AdoptionConfirmationController controller;
 
-  AdoptionConfirmationScreen({Key? key}) : super(key: key);
+  AdoptionConfirmationScreen({super.key, required this.pet})
+      : controller = Get.put(AdoptionConfirmationController(pet));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF002D63), // Fondo azul oscuro
+      backgroundColor: const Color(0xFF002D63),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -50,7 +53,7 @@ class AdoptionConfirmationScreen extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: () => controller.openWhatsApp(),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // Color del botón
+                    backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),

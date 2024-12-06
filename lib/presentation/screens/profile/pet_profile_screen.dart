@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../models/pet/pet_response.dart';
 import '../pet/adoption_form/adoption_form_screen.dart';
 import 'pet_profile_controller.dart';
 
 class PetProfileScreen extends StatelessWidget {
-  final PetProfileController controller = Get.put(PetProfileController());
+  final PetProfileController controller = Get.put(PetProfileController(Get.find()));
 
   @override
   Widget build(BuildContext context) {
+    final PetResponse pet = Get.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Perfil de la Mascota"),
@@ -19,61 +21,61 @@ class PetProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             // Imagen de la mascota
-            Obx(() => ClipRRect(
+            ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
               child: Image.network(
-                controller.imageUrl.value,
+                pet.imageUrl!,
                 height: 200,
                 fit: BoxFit.cover,
               ),
-            )),
+            ),
             SizedBox(height: 16),
 
             // Nombre del perro
-            Obx(() => Text(
-              controller.petName.value,
+            Text(
+              pet.name!,
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.blue[800],
               ),
-            )),
+            ),
             SizedBox(height: 8),
 
             // Información básica: raza, sexo y peso
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Obx(() => InfoBox(label: 'Raza', value: controller.breed.value)),
-                Obx(() => InfoBox(label: 'Sexo', value: controller.gender.value)),
-                Obx(() => InfoBox(label: 'Peso', value: controller.weight.value)),
+                InfoBox(label: 'Raza', value: pet.breed!),
+                InfoBox(label: 'Sexo', value: pet.gender!),
+                InfoBox(label: 'Peso', value: pet.weight!),
               ],
             ),
             SizedBox(height: 16),
 
             // Descripción de la mascota
-            Obx(() => Container(
+            Container(
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.blue[50],
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: Text(
-                controller.description.value,
+                pet.description!,
                 style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 textAlign: TextAlign.center,
               ),
-            )),
+            ),
             SizedBox(height: 16),
 
             // Botón de adoptar
             ElevatedButton(
               onPressed: () {
-                Get.to(() => AdoptionFormScreen());
+                Get.to(() => AdoptionFormScreen(pet: pet));
               },
               child: Text('Adoptar'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue[800], // Cambia 'primary' a 'backgroundColor'
+                backgroundColor: Colors.blue[800],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),

@@ -30,125 +30,118 @@ class CompareImageScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: GetBuilder<CompareImageController>(
-            builder: (_) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Comparar imagen',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.pickImage();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFDD4F4D),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: GetBuilder<CompareImageController>(
+              builder: (_) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Comparar imagen',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                     ),
-                    child: Text(
-                      'Elegir imagen',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  if (controller.image != null)
-                    Column(
-                      children: [
-                        Image.file(controller.image!),
-                        SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            controller.uploadImage(context, pet.imageUrl!);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                          ),
-                          child: Text(
-                            'Realizar Comparación',
-                            style: TextStyle(fontSize: 16, color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  SizedBox(height: 16),
-                  Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFFFCECD),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Resultado del análisis',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          controller.comparisonResultMessage,
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  if (controller.isComparisonSuccessful)
+                    SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        _launchWhatsApp('+1234567890', 'Hola, he encontrado una coincidencia con la mascota reportada.');
+                        controller.pickImage();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: Color(0xFFDD4F4D),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                       ),
                       child: Text(
-                        'Avisar al informante',
+                        'Elegir imagen',
                         style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
-                ],
-              );
-            },
+                    SizedBox(height: 16),
+                    if (controller.image != null)
+                      Column(
+                        children: [
+                          Image.file(controller.image!),
+                          SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              controller.uploadImage(context, pet.imageUrl!);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                            ),
+                            child: Text(
+                              'Realizar Comparación',
+                              style: TextStyle(fontSize: 16, color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    SizedBox(height: 16),
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFFCECD),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Resultado del análisis',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            controller.comparisonResultMessage,
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    if (controller.isComparisonSuccessful)
+                      ElevatedButton(
+                        onPressed: () {
+                          controller.launchWhatsApp(pet.reportingUserId!);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                        ),
+                        child: Text(
+                          'Avisar al informante',
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
     );
-  }
-
-  void _launchWhatsApp(String phoneNumber, String message) async {
-    final url = Uri.parse('https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}');
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 }
