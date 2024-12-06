@@ -1,10 +1,23 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../../../../common/utils/utils.dart';
+import '../../../../data/network/nestjs/analyzer_image_repository.dart';
 import '../../../../data/network/nestjs/pet_repository.dart';
+import '../../../../models/analyzer_image/get_features_pet/get_features_pet_response.dart';
 import '../../../../models/pet/pet_response.dart';
 import 'dart:io';
 
 class PetListController extends GetxController {
+
+  final analyzerImageRepository = AnalyzerImageRepository();
+  final utils = Utils();
+  File? image;
+  bool isUploading = false;
+  late GetFeaturesPetResponse responseData;
+
   var isLoading = true.obs;
   var isFilterMenuOpen = false.obs;
   var filteredPets = <PetResponse>[].obs;
@@ -21,9 +34,9 @@ class PetListController extends GetxController {
   Future<void> fetchAdoptingPets() async {
     try {
       isLoading(true);
-      var pets = await petRepository.getPets(false);
+      var pets = await petRepository.getPets(isMissing: false);
       adoptingPets.assignAll(pets);
-      filteredPets.assignAll(pets); // Inicializa los resultados filtrados
+      filteredPets.assignAll(pets);
     } catch (e) {
       print('Failed to fetch adopting pets: $e');
     } finally {
@@ -35,27 +48,66 @@ class PetListController extends GetxController {
     isFilterMenuOpen(!isFilterMenuOpen.value);
   }
 
-  Future<void> analyzeImage(File image) async {
+  Future<void> pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      image = File(pickedFile.path);
+      update();
+    }
+  }
+
+
+  Future<void> uploadImage(BuildContext context) async {
+    if (image == null) return;
+
+    isUploading = true;
+    update();
+
     try {
-      isLoading(true);
+      final base64Image = await utils.convertImageToBytes(image!);
+      final fileName = 'pet/${await utils.generateImageName(image!)}';
+      responseData = await analyzerImageRepository.getFeaturesPet(fileName, base64Image);
 
-      // Simula una llamada a la API para analizar la imagen
-      await Future.delayed(Duration(seconds: 2));
-      // Aquí podrías obtener las características de la imagen como resultado
-      var characteristics = ['small', 'white'];
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Image uploaded successfully')),
+        );
+      }
 
-      // Filtra la lista de mascotas según las características
-      filteredPets.assignAll(adoptingPets.where((pet) {
-        return characteristics.any((c) => pet.breed!.toLowerCase().contains(c));
-      }).toList());
-    } catch (e) {
-      Get.snackbar(
-        'Error',
-        'No se pudo analizar la imagen.',
-        snackPosition: SnackPosition.BOTTOM,
+      print('ImageUrl: ${responseData.imageUrl}');
+      print('Breed: ${responseData.breed}');
+      print('Weight: ${responseData.weight}');
+      print('Size: ${responseData.size}');
+      print('Age: ${responseData.age}');
+      print('Color: ${responseData.color}');
+      print('Species: ${responseData.species}');
+
+      // Call getPets with the obtained characteristics
+      var pets = await petRepository.getPets(
+        breed: responseData.breed,
+        // weight: responseData.weight.toString(),
+        // size: responseData.size,
+        // age: responseData.age.toString(),
+        // color: responseData.color,
+        species: responseData.species,
       );
+
+      filteredPets.assignAll(pets);
+
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to upload image'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } finally {
-      isLoading(false);
+      isUploading = false;
+      update();
     }
   }
 }

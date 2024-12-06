@@ -34,11 +34,29 @@ class PetRepository {
     }
   }
 
-  Future<List<PetResponse>> getPets(bool isMissing) async {
+  Future<List<PetResponse>> getPets({
+    bool isMissing = false,
+    String? breed,
+    String? weight,
+    String? size,
+    String? age,
+    String? color,
+    String? species,
+  }) async {
     try {
+      final queryParameters = {
+        'isMissing': isMissing,
+        if (breed != null) 'breed': breed,
+        if (weight != null) 'weight': weight,
+        if (size != null) 'size': size,
+        if (age != null) 'age': age,
+        if (color != null) 'color': color,
+        if (species != null) 'species': species,
+      };
+
       final response = await dio.get(
         '${NetworkConstants.baseUrl}${NetworkConstants.petRoute}${NetworkConstants.petGetAllEndpoint}',
-        queryParameters: {'isMissing': isMissing},
+        queryParameters: queryParameters,
       ).timeout(const Duration(seconds: 10), onTimeout: () {
         throw TimeoutException('Time out');
       });

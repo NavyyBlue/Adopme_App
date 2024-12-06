@@ -16,7 +16,7 @@ class MissingPetListController extends GetxController {
   Future<void> fetchMissingPets() async {
     try {
       isLoading(true);
-      var pets = await petRepository.getPets(true);
+      var pets = await petRepository.getPets(isMissing: true);
       missingPets.assignAll(pets);
     } catch (e) {
       // Handle error

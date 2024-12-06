@@ -45,9 +45,29 @@ class PetListScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: ElevatedButton.icon(
                       onPressed: () async {
-                        final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-                        if (image != null) {
-                          controller.analyzeImage(File(image.path));
+                        await controller.pickImage();
+                        if (controller.image != null) {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: Row(
+                                  children: [
+                                    CircularProgressIndicator(),
+                                    SizedBox(width: 20),
+                                    Text('Subiendo imagen...'),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                          if (context.mounted) {
+                            await controller.uploadImage(context);
+                          }
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
                         }
                       },
                       icon: Icon(Icons.image),
@@ -94,7 +114,8 @@ class PetListScreen extends StatelessWidget {
                                   SizedBox(width: 16),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           pet.name!,
